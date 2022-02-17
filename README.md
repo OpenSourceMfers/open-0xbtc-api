@@ -1,6 +1,6 @@
-# Starflask API Web
+# Open 0xBitcoin API
  
-Web frontend for API Service
+  API Service for 0xBTC Mineable Token
  
 
  
@@ -8,14 +8,14 @@ Web frontend for API Service
 
 ### TODO
  
--allow logged-in users to generate API key 
--when a new request comes in, increment use counter on API key - limit max  
-
--Certain api keys will have allowlists - can only come from certain domain 
+ 
 
 
+### Pre-requisite
+```
+install Nodejs 14
 
-
+```
 
 
 ### Development commands
