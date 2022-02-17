@@ -1,0 +1,110 @@
+{
+  "mainnet": {
+    "0xb6ed7644c69416d67b522e20bc294a9a9b405b31": {
+      "0": {
+        "name": "0xBTC",
+        "address": "0xb6ed7644c69416d67b522e20bc294a9a9b405b31",
+        "decimals": 8,
+        "minBidAmount": 1
+      }
+    },
+    "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2": {
+      "0": {
+        "name": "wEth",
+        "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+        "decimals": 18,
+        "minBidAmount": 0.02
+      }
+    },
+    "": { "0": { "address": "" } },
+    "0xc2c747e0f7004f9e8817db2ca4997657a7746928": { "0": { "name": "Hashmasks", "address": "0xc2c747e0f7004f9e8817db2ca4997657a7746928" } },
+    "0x6c10511ddea5f3ed38a0163224198e37b81525bc": { "0": { "name": "0xBitcoinMemes", "address": "0x6c10511ddea5f3ed38a0163224198e37b81525bc" } },
+    "0x7c40c393dc0f283f318791d746d894ddd3693572": {
+      "0": { "name": "WrappedMoonCats", "address": "0x7c40c393dc0f283f318791d746d894ddd3693572" }
+    },
+    "0xb7f7f6c52f2e2fdb1963eab30438024864c313f6": {
+      "0": { "name": "WrappedCryptopunks", "address": "0xb7f7f6c52f2e2fdb1963eab30438024864c313f6" }
+    },
+    "0xd4e4078ca3495de5b1d4db434bebc5a986197782": { "0": { "name": "Autoglyphs", "address": "0xd4e4078ca3495de5b1d4db434bebc5a986197782" } },
+    "0x9126b817ccca682beaa9f4eae734948ee1166af1": { "0": { "name": "BGanPunksV1", "address": "0x9126b817ccca682beaa9f4eae734948ee1166af1" } },
+    "0x31385d3520bced94f77aae104b406994d8f2168c": { "0": { "name": "BGanPunksV2", "address": "0x31385d3520bced94f77aae104b406994d8f2168c" } },
+    "0xf87e31492faf9a91b02ee0deaad50d51d56d5d4d": {
+      "0": { "name": "DecentralandParcels", "address": "0xf87e31492faf9a91b02ee0deaad50d51d56d5d4d" }
+    },
+    "0x3a0c25422d086950880a976557d53d924935d878": { "0": { "name": "EthMenAvatars", "address": "0x3a0c25422d086950880a976557d53d924935d878" } },
+    "0x837779ed98209c38b9bf77804a4f0105b9eb2e02": { "0": { "name": "PunkBodies", "address": "0x837779ed98209c38b9bf77804a4f0105b9eb2e02" } },
+    "0x97ca7fe0b0288f5eb85f386fed876618fb9b8ab8": { "0": { "name": "Ethercards", "address": "0x97ca7fe0b0288f5eb85f386fed876618fb9b8ab8" } },
+    "0x8754f54074400ce745a7ceddc928fb1b7e985ed6": { "0": { "name": "Eulerbeats", "address": "0x8754f54074400ce745a7ceddc928fb1b7e985ed6" } },
+    "0x79986af15539de2db9a5086382daeda917a9cf0c": {
+      "0": { "name": "CryptovoxelsParcels", "address": "0x79986af15539de2db9a5086382daeda917a9cf0c" }
+    },
+    "0x059edd72cd353df5106d2b9cc5ab83a52287ac3a": {
+      "0": {
+        "name": "ChromieSquiggles",
+        "address": "0x059edd72cd353df5106d2b9cc5ab83a52287ac3a",
+        "projectId": 0
+      },
+      "9": {
+        "name": "Ignition",
+        "address": "0x059edd72cd353df5106d2b9cc5ab83a52287ac3a",
+        "projectId": 9
+      },
+      "10": {
+        "name": "Nimbuds",
+        "address": "0x059edd72cd353df5106d2b9cc5ab83a52287ac3a",
+        "projectId": 10
+      },
+      "13": {
+        "name": "Ringers",
+        "address": "0x059edd72cd353df5106d2b9cc5ab83a52287ac3a",
+        "projectId": 13
+      },
+      "23": {
+        "name": "Archetype",
+        "address": "0x059edd72cd353df5106d2b9cc5ab83a52287ac3a",
+        "projectId": 23
+      }
+    }
+  },
+  "goerli": {
+    "0xab89a7742cb10e7bce98540fd05c7d731839cf9f": {
+      "0": {
+        "name": "0xBTC",
+        "address": "0xab89a7742cb10e7bce98540fd05c7d731839cf9f",
+        "decimals": 8,
+        "minBidAmount": 1
+      }
+    },
+    "0xf5e7aa9fd045ce55c68f9a4f80a608496f152524": {
+      "0": {
+        "name": "wEth",
+        "address": "0xf5e7aa9fd045ce55c68f9a4f80a608496f152524",
+        "decimals": 18,
+        "minBidAmount": 0.02
+      }
+    },
+    "0x1fd534630e4e720c1a71c596aeb896faaa979f19": { "0": { "address": "0x1fd534630e4e720c1a71c596aeb896faaa979f19" } },
+    "0x7cea7e61f8be415bee361799f19644b9889713cd": {
+      "0": {
+        "name": "TestSquiggles",
+        "address": "0x7cea7e61f8be415bee361799f19644b9889713cd",
+        "projectId": 0
+      },
+      "1": {
+        "name": "TestIgnition",
+        "address": "0x7cea7e61f8be415bee361799f19644b9889713cd",
+        "projectId": 1
+      }
+    },
+    "0x39ec448b891c476e166b3c3242a90830db556661": { "0": { "name": "ArtSale", "address": "0x39ec448b891c476e166b3c3242a90830db556661" } },
+    "0xcb6687a21c61469ba6673ec3bdd98e9693bda76e": {
+      "0": { "name": "WrappedCryptoPunks", "address": "0xcb6687a21c61469ba6673ec3bdd98e9693bda76e" }
+    },
+    "0x7c40c393dc0f283f318791d746d894ddd3693572": {
+      "0": { "name": "WrappedMoonCats", "address": "0x7c40c393dc0f283f318791d746d894ddd3693572" }
+    },
+    "0xe51750e911724772a597f47e002de891bfc9adf9": {
+      "0": { "name": "CryptovoxelsParcels", "address": "0xe51750e911724772a597f47e002de891bfc9adf9" }
+    }
+  }
+}

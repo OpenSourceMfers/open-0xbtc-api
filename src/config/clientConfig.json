@@ -1,0 +1,36 @@
+{
+   
+    "production":{
+       
+        "external_routes": {"docs":"https://docs.starflask.com",
+                        "api":"https://api.starflask.com"},
+        
+        "currencyTokens": [{"name":"weth","label":"wEth"},
+                    {"name":"0xbitcoin","label":"0xBTC"}] 
+           
+        
+    },
+    "staging":{
+      "external_routes": {"docs":"https://docs.starflask.com",
+        "api":"https://api.starflask.com"} 
+       
+      
+    },
+    
+    "development":{
+     
+      "external_routes": {"docs":"http://localhost:3000",
+        "api":"http://localhost:3000"},
+
+
+        "currencyTokens": [{"name":"weth","label":"wEth"},
+                         {"name":"0xbitcoin","label":"0xBTC"}] 
+
+          
+           
+        
+        
+    }
+
+
+}

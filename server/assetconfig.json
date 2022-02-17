@@ -1,0 +1,15 @@
+[
+    {"name":"Punks","contractAddress":"0x269616d549d7e8eaa82dfb17028d0b212d11232a","sushiPair":"0x0463a06fbc8bf28b3f120cd1bfc59483f099d332","reservesFlipped":true},
+    
+    {"name":"Cryptoadz","contractAddress":"0x1999a92711cf8815b7f6b07bd34b4287d853cfba","sushiPair":"0xef4fa701fa5df88ef0d5707d6144e446a1a2238b","reservesFlipped":true},
+    {"name":"Bored Apes","contractAddress":"0xea47b64e1bfccb773a0420247c0aa0a3c1d2e5c5","sushiPair":"0xd829de54877e0b66a2c3890b702fa5df2245203e","reservesFlipped":false},
+
+    {"name":"Cool Cats","contractAddress":"0x114f1388fab456c4ba31b1850b244eedcd024136","sushiPair":"0x0225e940deecc32a8d7c003cfb7dae22af18460c","reservesFlipped":true},
+   
+    {"name":"Phunks","contractAddress":"0xb39185e33e8c28e0bb3dbbce24da5dea6379ae91","sushiPair":"0xd3e31f8aac930e354283ca3efda1e22525f98af1","reservesFlipped":true},
+  
+   
+    {"name":"Mooncats","contractAddress":"0x98968f0747e0a261532cacc0be296375f5c08398","sushiPair":"0x0aa1e808bba7cde5210d13d23ee726de37b8a8bb","reservesFlipped":true} 
+  
+
+]
