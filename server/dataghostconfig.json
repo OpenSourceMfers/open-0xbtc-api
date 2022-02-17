@@ -3,12 +3,8 @@
         "vibeGraphConfig":{
             "contracts":[ 
 
-                {"address":"0xab89a7742cb10e7bce98540fd05c7d731839cf9f", "startBlock":5039000 , "type":"ERC20"} ,
-                {"address":"0x39ec448b891c476e166b3c3242a90830db556661", "startBlock": 4465713, "type":"ERC721"},
-                {"address":"0x7cea7e61f8be415bee361799f19644b9889713cd", "startBlock": 4528636, "type":"ERC721"},
-              
-              {"address":"0x1fd534630e4e720c1a71c596aeb896faaa979f19", "startBlock": 4531988 , "type":"BuyTheFloor"},
-              {"address":"0x87d091782e7a222ce5b0a65283abd32ec29466e8", "startBlock": 4580955  , "type":"BurnBook"}
+                {"address":"0x244aa29426fb6524760bd9acbb66ad53c5eb32ca", "startBlock":2494326 , "type":"ERC20"}  
+      
 
             ],
       
@@ -20,7 +16,12 @@
     },
     "staging":{
         "vibeGraphConfig":{
-            "contracts":[],
+            "contracts":[ 
+
+                {"address":"0x244aa29426fb6524760bd9acbb66ad53c5eb32ca", "startBlock":2494326 , "type":"ERC20"}  
+      
+
+            ],
       
             "dbName":"vibegraph_staging" ,
             "logging":true
@@ -32,35 +33,8 @@
 
         "vibeGraphConfig":{
             "contracts":[
-                {"address":"0xb7f7f6c52f2e2fdb1963eab30438024864c313f6","startBlock":10821737, "type":"ERC721"},
-                {"address":"0x7c40c393dc0f283f318791d746d894ddd3693572","startBlock":12025810, "type":"ERC721"},
-                {"address":"0x059edd72cd353df5106d2b9cc5ab83a52287ac3a","startBlock":11338811, "type":"ERC721"},
-                {"address":"0x6c10511ddea5f3ed38a0163224198e37b81525bc","startBlock":9426427,  "type":"ERC721"}, 
-                {"address":"0xd07dc4262BCDbf85190C01c996b4C06a461d2430","startBlock":10147631, "type":"ERC721"},
-                {"address":"0x495f947276749ce646f68ac8c248420045cb7b5e","startBlock":11374506, "type":"ERC721"},
-                {"address":"0x79986af15539de2db9a5086382daeda917a9cf0c","startBlock":5735964, "type":"ERC721" },
-
-                {"address":"0xd4e4078ca3495de5b1d4db434bebc5a986197782","name":"autoglyphs","startBlock":5735964, "type":"ERC721" },
-                
-                {"address":"0x1cb1a5e65610aeff2551a50f76a87a7d3fb649c6","name":"Cryptoadz", "startBlock": 13186834, "type":"ERC721"},
-
-                {"address":"0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270","startBlock":11437151, "type":"ERC721" },
-                {"address":"0x059edd72cd353df5106d2b9cc5ab83a52287ac3a","startBlock":11338811, "type":"ERC721" },
-
-                {"address":"0x9b2214d749f736873b2232a54889342610878651","name":"digitaltoast","startBlock":12203006, "type":"ERC721" },
-                {"address":"0x4E3C5d37cA4d92b54248c411b496A0c959BCfe57","name":"deployart","startBlock":12254749, "type":"ERC721" },
-
-                {"address":"0xa7d8d9ef8D8Ce8992Df33D8b8CF4Aebabd5bD270","name":"artblocks","startBlock":11437151, "type":"ERC721" },
-                {"address":"0x059EDD72Cd353dF5106D2B9cC5ab83a52287aC3a","name":"artblocks_old","startBlock":11338811 , "type":"ERC721" },
-                
-                
-                
-                {"address":"0x392d7bda765d8bbe626abeb2127e6d6395eff44c", "name": "BuyTheFloor", "startBlock":12158466 , "type":"BuyTheFloor"},
-                {"address":"0x5a0361e743b1d172dc09456388aa3d4acd14adf3", "name": "BurnBook", "startBlock":12202860 , "type":"BurnBook"},
-
-                {"address":"0xb6ed7644c69416d67b522e20bc294a9a9b405b31", "name": "0xbitcoin", "startBlock":5039000 , "type":"ERC20"},
-                {"address":"0x657223e3fdf539d92c40664db340097d5d6bd9f5", "name": "MinersGuildReserve", "startBlock": 12244573 , "type":"ERC20"}
-
+    
+                {"address":"0xb6ed7644c69416d67b522e20bc294a9a9b405b31", "name": "0xbitcoin", "startBlock":5039000 , "type":"ERC20"} 
 
 
                 
