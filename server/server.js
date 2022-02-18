@@ -9,7 +9,7 @@ import FileHelper from './lib/file-helper.js'
  
 import CoinDataCollector from './lib/coin-data-collector.js'
 
-
+import DataGhost from './lib/dataghost.js'
 
 import Web3 from 'web3'
 
@@ -44,7 +44,8 @@ let assetConfig = FileHelper.readJSONFile('./server/assetconfig.json')
     let apiInterface = new APIInterface(web3, mongoInterface, vibegraphInterface, serverConfig)
  
       
-    
+    let dataghost = new DataGhost()
+    dataghost.init(serverConfig)
 
     //let packetCustodian = new PacketCustodian(web3,mongoInterface, serverConfig)
 

@@ -16,9 +16,7 @@
     "server": "NODE_ENV=production node server/server.js",
     "server-staging": "NODE_ENV=staging node server/server.js",
     "server-dev": "NODE_ENV=development node server/server.js",
-    "dataghost": "NODE_ENV=production node server/dataghost.js",
-    "dataghost-staging": "NODE_ENV=staging node server/dataghost.js",
-    "dataghost-dev": "NODE_ENV=development node server/dataghost.js",
+  
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit"
   },
