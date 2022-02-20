@@ -8,7 +8,7 @@ import Web3 from 'web3'
 
  
 
-import  IndexerMineableToken  from '../indexers/IndexerMineableToken.js' 
+import IndexerMineableToken  from '../indexers/IndexerMineableToken.js' 
 
 let SuperERC20ABI = FileHelper.readJSONFile('./server/abi/SuperERC20ABI.json')
  

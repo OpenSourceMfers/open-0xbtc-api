@@ -3,7 +3,7 @@
         "vibeGraphConfig":{
             "contracts":[ 
 
-                {"address":"0x244aa29426fb6524760bd9acbb66ad53c5eb32ca", "startBlock":2494326 , "type":"ERC20"}  
+                {"address":"0x244aa29426fb6524760bd9acbb66ad53c5eb32ca", "startBlock":2494326  , "type":"MineableToken"}  
       
 
             ],
@@ -12,13 +12,13 @@
             "logging":true
         },
      
-        "chainId":5
+        "chainId":4
     },
     "staging":{
         "vibeGraphConfig":{
             "contracts":[ 
 
-                {"address":"0x244aa29426fb6524760bd9acbb66ad53c5eb32ca", "startBlock":2494326 , "type":"ERC20"}  
+                {"address":"0x244aa29426fb6524760bd9acbb66ad53c5eb32ca", "startBlock":2494326 , "type":"MineableToken"}  
       
 
             ],
@@ -27,14 +27,14 @@
             "logging":true
         },
      
-        "chainId":5
+        "chainId":4
     },
     "production":{
 
         "vibeGraphConfig":{
             "contracts":[
     
-                {"address":"0xb6ed7644c69416d67b522e20bc294a9a9b405b31", "name": "0xbitcoin", "startBlock":5039000 , "type":"ERC20"} 
+                {"address":"0xb6ed7644c69416d67b522e20bc294a9a9b405b31", "name": "0xbitcoin", "startBlock":5039000 , "type":"MineableToken"} 
 
 
                 
