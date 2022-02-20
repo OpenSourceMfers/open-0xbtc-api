@@ -22,7 +22,11 @@ export default class IndexerMineableToken {
    
     static async modifyERC20LedgerByEvent(  event, mongoInterface){
      
-        let eventName = event.event 
+       let eventName = event.event 
+
+       console.log('event',event)
+       
+        let blockNumber = parseInt(event.blockNumber)
 
       
 
@@ -68,8 +72,11 @@ export default class IndexerMineableToken {
 
            let to = web3utils.toChecksumAddress(outputs['0'] ) 
            let amount = parseInt(outputs['1']) 
+           let epochCount = parseInt(outputs['2']) 
+           
 
            await IndexerMineableToken.modifyERC20LedgerBalance(   to ,contractAddress , amount  , mongoInterface)  
+           await IndexerMineableToken.mint(  to, contractAddress, amount , epochCount, blockNumber,   mongoInterface)  
 
        }
        else if(eventName == 'deposit'){
@@ -92,6 +99,16 @@ export default class IndexerMineableToken {
 
       
    }
+
+
+   static async mint(accountAddress, contractAddress, amountDelta, epochCount, blockNumber, mongoInterface){
+
+        let collectionName = 'erc20_mint' 
+
+        await mongoInterface.insertOne(collectionName, {accountAddress: accountAddress, contractAddress: contractAddress, amount: amountDelta , epochCount:epochCount,  blockNumber: blockNumber, lastUpdatedAt: Date.now()}   )
+
+    
+    }
 
    static async modifyERC20LedgerBalance(accountAddress, contractAddress, amountDelta, mongoInterface){
 

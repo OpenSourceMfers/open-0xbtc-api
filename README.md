@@ -7,6 +7,9 @@
 
 
 ### TODO
+-write a script that loops through all erc20_mint in order to generate estimated difficulty for each record 
+-write a script that loops through all erc20-mint in order to generate estimated hashrate for each record 
+
  
  
 
