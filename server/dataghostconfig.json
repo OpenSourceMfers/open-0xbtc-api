@@ -8,7 +8,7 @@
 
             ],
       
-            "dbName":"vibegraph_dev" ,
+            "dbName":"vibegraph_development" ,
             "logging":true
         },
      

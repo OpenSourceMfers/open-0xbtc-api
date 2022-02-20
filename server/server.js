@@ -26,7 +26,7 @@ let assetConfig = FileHelper.readJSONFile('./server/assetconfig.json')
     console.log('server config: ',serverConfig)
 
 
-    let mongoInterface = new MongoInterface( 'starflask_api_'.concat(envmode) ) 
+    let mongoInterface = new MongoInterface( 'open_0xbtc_api_'.concat(envmode) ) 
 
     let vibegraphInterface = new MongoInterface( 'vibegraph_'.concat(envmode) ) 
 
