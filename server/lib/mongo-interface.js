@@ -148,6 +148,21 @@ export default class MongoInterface  {
 
     }
 
+    async insertMany(collectionName,array)
+    {
+
+      if(!array || array.length < 1) return 
+    //  var myobj = { name: "Company Inc", address: "Highway 37" };
+      return new Promise(function(resolve, reject) {
+          this.dbo.collection(collectionName).insertMany(array, function(err, res) {
+            if (err) reject(err);
+          //  console.log("1 inserted ",collectionName);
+            resolve(res);
+          });
+      }.bind(this));
+
+    }
+
 
     //obviously dont do this in production..
     async dropCollection(collectionName)
