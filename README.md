@@ -28,6 +28,15 @@ npm run server-dev  (in terminal 1)
 npm run dev  (in terminal 2)
 ```
 
+
+### Run Tests
+```
+npm install
+npm run test  
+```
+
+
+
 ### Packaging commands
 ```
 npm run build
