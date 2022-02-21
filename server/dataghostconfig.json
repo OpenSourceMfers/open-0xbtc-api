@@ -18,7 +18,7 @@
         "vibeGraphConfig":{
             "contracts":[ 
 
-                {"address":"0x244aa29426fb6524760bd9acbb66ad53c5eb32ca", "startBlock":2494326 , "type":"MineableToken"}  
+                {"address":"0xb6ed7644c69416d67b522e20bc294a9a9b405b31", "startBlock":5039000 , "type":"MineableToken"}  
       
 
             ],
@@ -27,7 +27,7 @@
             "logging":true
         },
      
-        "chainId":4
+        "chainId":1
     },
     "production":{
 

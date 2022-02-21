@@ -24,7 +24,7 @@ export default class IndexerMineableToken {
      
        let eventName = event.event 
 
-       console.log('event',event)
+     //  console.log('event',event)
        
         let blockNumber = parseInt(event.blockNumber)
 

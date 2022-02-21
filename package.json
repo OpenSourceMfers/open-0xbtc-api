@@ -17,13 +17,13 @@
     "server-staging": "NODE_ENV=staging node server/server.js",
     "server-dev": "NODE_ENV=development node server/server.js",
     "test": "NODE_ENV=TEST mocha  'tests/**/*.spec.js' --timeout 10000",
-  
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.14.0",
     "axios": "^0.21.1",
+    "bignumber.js": "^9.0.2",
     "chart.js": "^3.1.1",
     "core-js": "^2.6.5",
     "cors": "^2.8.5",
