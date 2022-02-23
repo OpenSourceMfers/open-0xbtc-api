@@ -117,9 +117,9 @@ export default class IndexerMineableToken {
        let existingFrom = await mongoInterface.findOne(collectionName, {accountAddress: accountAddress, contractAddress: contractAddress }  )
 
        if(existingFrom){
-           await mongoInterface.updateCustomAndFindOne(collectionName, {accountAddress: accountAddress, contractAddress: contractAddress } , {  $inc: { amount: amountDelta } , $set:{ lastUpdatedAt: Date.now()  } } )
+           await mongoInterface.updateCustomAndFindOne(collectionName, {accountAddress: accountAddress, contractAddress: contractAddress } , {  $inc: { amount: amountDelta } }, $set:{ lastUpdatedAt: parseInt(Date.now())   } )
        }else{
-           await mongoInterface.insertOne(collectionName, {accountAddress: accountAddress, contractAddress: contractAddress, amount: amountDelta , lastUpdatedAt: Date.now()}   )
+           await mongoInterface.insertOne(collectionName, {accountAddress: accountAddress, contractAddress: contractAddress, amount: amountDelta , lastUpdatedAt: parseInt(Date.now())}   )
        }
    }
 
@@ -130,9 +130,9 @@ export default class IndexerMineableToken {
        let existingFrom = await mongoInterface.findOne(collectionName, {ownerAddress: ownerAddress, spenderAddress: spenderAddress, contractAddress: contractAddress }  )
 
        if(existingFrom){
-           await mongoInterface.updateCustomAndFindOne(collectionName, {ownerAddress: ownerAddress, spenderAddress: spenderAddress, contractAddress: contractAddress } , {  $inc: { amount: amountDelta } , $set:{ lastUpdatedAt: Date.now() } } )
+           await mongoInterface.updateCustomAndFindOne(collectionName, {ownerAddress: ownerAddress, spenderAddress: spenderAddress, contractAddress: contractAddress } , {  $inc: { amount: amountDelta }} , $set:{ lastUpdatedAt: parseInt(Date.now())  } )
        }else{
-           await mongoInterface.insertOne(collectionName, {ownerAddress: ownerAddress, spenderAddress: spenderAddress, contractAddress: contractAddress, amount: amountDelta , lastUpdatedAt: Date.now() }   )
+           await mongoInterface.insertOne(collectionName, {ownerAddress: ownerAddress, spenderAddress: spenderAddress, contractAddress: contractAddress, amount: amountDelta , lastUpdatedAt: parseInt(Date.now()) }   )
        }
    }
 
@@ -143,9 +143,9 @@ export default class IndexerMineableToken {
     let existingFrom = await mongoInterface.findOne(collectionName, {from: from, to: to, contractAddress: contractAddress }  )
 
     if(existingFrom){
-        await mongoInterface.updateCustomAndFindOne(collectionName, {from: from, to: to, contractAddress: contractAddress } , {  $inc: { amount: amountDelta , $set:{ lastUpdatedAt: Date.now() } } } )
+        await mongoInterface.updateCustomAndFindOne(collectionName, {from: from, to: to, contractAddress: contractAddress } , {  $inc: { amount: amountDelta }, $set:{ lastUpdatedAt: parseInt(Date.now())} }  )
     }else{
-        await mongoInterface.insertOne(collectionName, {from: from, to: to, contractAddress: contractAddress, amount: amountDelta, lastUpdatedAt: Date.now() }   )
+        await mongoInterface.insertOne(collectionName, {from: from, to: to, contractAddress: contractAddress, amount: amountDelta, lastUpdatedAt:parseInt(Date.now()) }   )
     }
 }
 
@@ -156,9 +156,9 @@ export default class IndexerMineableToken {
        let existingFrom = await mongoInterface.findOne(collectionName, {ownerAddress: ownerAddress, spenderAddress: spenderAddress, contractAddress: contractAddress }  )
 
        if(existingFrom){
-           await mongoInterface.updateCustomAndFindOne(collectionName, {ownerAddress: ownerAddress, spenderAddress: spenderAddress, contractAddress: contractAddress } , {  $set: { amount: newAmount , lastUpdatedAt: Date.now()} } )
+           await mongoInterface.updateCustomAndFindOne(collectionName, {ownerAddress: ownerAddress, spenderAddress: spenderAddress, contractAddress: contractAddress } , {  $set: { amount: newAmount , lastUpdatedAt: parseInt(Date.now())} } )
        }else{
-           await mongoInterface.insertOne(collectionName, {ownerAddress: ownerAddress, spenderAddress: spenderAddress, contractAddress: contractAddress, amount: newAmount , lastUpdatedAt: Date.now() }   )
+           await mongoInterface.insertOne(collectionName, {ownerAddress: ownerAddress, spenderAddress: spenderAddress, contractAddress: contractAddress, amount: newAmount , lastUpdatedAt: parseInt(Date.now()) }   )
        }
    }
 
