@@ -36,8 +36,13 @@ describe("Test", async function() {
         let stubRecords = [
             
             {epochCount: 2,blockNumber:5039071,accountAddress:"0x530d92dfb5caa11347F26eE741910Dee6eed3208", contractAddress:"0xB6eD7644C69416d67B522e20bC294A9a9B405B31"},
-            {epochCount: 1024,blockNumber:5139071} //change me 
-        
+            {epochCount: 1024,blockNumber:5085562,}, //change me 
+            {epochCount: 2048,blockNumber:5090942,},
+            {epochCount: 3072,blockNumber:5095807,},
+            {epochCount: 4096,blockNumber:5100227,} 
+ 
+
+            
         ]
  
         
@@ -51,8 +56,14 @@ describe("Test", async function() {
     it("can estimate difficulty for all mints", async function() {
 
       await MintEstimateTasks.estimateDifficultyForAllMints(vibegraphInterface)
-     
-      expect(true).to.equal(true);
+      
+
+
+      let secondEra = await vibegraphInterface.findOne('erc20_difficulty_era', {difficultyEra:1})
+
+
+      expect(secondEra).to.exist 
+      expect(secondEra.estimatedDifficulty).to.eql(2)
 
     });
 

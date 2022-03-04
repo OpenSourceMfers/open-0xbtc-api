@@ -23,10 +23,11 @@ const web3utils = Web3.utils
 export default class MintEstimateTasks {
 
 
-
-
+  
 
     static async estimateDifficultyForAllMints(mongoInterface){
+
+        BigNumber.config({ ROUNDING_MODE: 1 })//round down    
 
 
         let difficultyAdjustmentEra = 0
@@ -40,14 +41,20 @@ export default class MintEstimateTasks {
 
         while(nextRow){
 
-            let estimatedTarget = await MintEstimateTasks.estimateDifficultyTargetForEra( difficultyAdjustmentEra , mongoInterface )
+            let {miningTarget, difficulty} = await MintEstimateTasks.estimateDifficultyTargetForEra( difficultyAdjustmentEra , mongoInterface )
 
-            if(!estimatedTarget){
+            
+            //console.log('mt', miningtarget)
+            if(!miningTarget){
                 break; 
             }
-            let upserted = await mongoInterface.upsertOne('erc20_difficulty_era', {difficultyEra: difficultyAdjustmentEra }, {difficultyEra: difficultyAdjustmentEra,estimatedDifficultyTarget: estimatedTarget} )
+
+            console.log('miningTarget', miningTarget , difficulty )
+
+
+            let upserted = await mongoInterface.upsertOne('erc20_difficulty_era', {difficultyEra: difficultyAdjustmentEra }, {difficultyEra: difficultyAdjustmentEra,estimatedDifficultyTarget: miningTarget, estimatedDifficulty: parseInt(difficulty)} )
             
-            console.log('upserted',upserted)
+            //console.log('upserted',upserted)
 
 
             difficultyAdjustmentEra++
@@ -68,7 +75,7 @@ export default class MintEstimateTasks {
 
         console.log('estimateDifficultyTargetForEra', eraCount  )
         if(eraCount == 0){
-            return _MAXIMUM_TARGET
+            return {miningTarget:_MAXIMUM_TARGET.toNumber(),difficulty:1}
         }   
 
         let initialEpochCount = (eraCount-1)*1024 
@@ -79,13 +86,13 @@ export default class MintEstimateTasks {
         let firstRowOfEra =  await mongoInterface.findOne('erc20_mint',{epochCount: initialEpochCount }) 
         if(!firstRowOfEra){
             console.log('WARN: no first era ')
-            return null 
+            return {miningTarget:null}
         }
 
         let lastRowOfEra = await mongoInterface.findOne('erc20_mint',{epochCount: ((eraCount)*1024) /*-1*/  })  // should be -1 ?
         if(!lastRowOfEra){
             console.log('WARN: no last era ')
-            return null 
+            return  {miningTarget:null} 
         }
 
         let previousEraData = await mongoInterface.findOne('erc20_difficulty_era', {difficultyEra: eraCount-1} )
@@ -102,28 +109,47 @@ export default class MintEstimateTasks {
         let miningTarget = previousTarget
 
         //if there were less eth blocks passed in time than expected
-        if( ethBlocksSinceLastDifficultyPeriod < targetEthBlocksPerDiffPeriod )
+        if( ethBlocksSinceLastDifficultyPeriod.lt( targetEthBlocksPerDiffPeriod ) )
         {
+
+          console.log('targetEthBlocksPerDiffPeriod',targetEthBlocksPerDiffPeriod.toNumber())       
+          console.log('ethBlocksSinceLastDifficultyPeriod',ethBlocksSinceLastDifficultyPeriod.toNumber())
+         
           let excess_block_pct = (targetEthBlocksPerDiffPeriod.times(100)).div( ethBlocksSinceLastDifficultyPeriod );
 
-          let excess_block_pct_extra = MintEstimateTasks.limitLessThan(excess_block_pct.minus(100),1000);
+
+          console.log('excess_block_pct',excess_block_pct.toNumber())
+
+          let excess_block_pct_extra = MintEstimateTasks.limitLessThan(excess_block_pct.minus(100),new BigNumber(1000));
+          
+            
+          console.log('excess_block_pct_extra',excess_block_pct_extra.toNumber())
+
+          console.log('miningTargetBefore',miningTarget.toNumber())
           // If there were 5% more blocks mined than expected then this is 5.  If there were 100% more blocks mined than expected then this is 100.
 
           //make it harder
           miningTarget = miningTarget.minus(miningTarget.div(2000).times(excess_block_pct_extra));   //by up to 50 %
+        
+                    
         }else{
             let shortage_block_pct = (ethBlocksSinceLastDifficultyPeriod.times(100)).div( targetEthBlocksPerDiffPeriod );
 
-            let shortage_block_pct_extra = MintEstimateTasks.limitLessThan(shortage_block_pct.minus(100),1000); //always between 0 and 1000
+            let shortage_block_pct_extra = MintEstimateTasks.limitLessThan(shortage_block_pct.minus(100),new BigNumber(1000)); //always between 0 and 1000
 
           //make it easier
-          miningTarget = miningTarget.add(miningTarget.div(2000).times(shortage_block_pct_extra));   //by up to 50 %
+          miningTarget = miningTarget.plus(miningTarget.div(2000).times(shortage_block_pct_extra));   //by up to 50 %
         }
 
+        //expect(miningTarget).to.eql( previousTarget.dividedBy(2) )
+        //miningTarget = previousTarget.dividedBy(2)
 
-        console.log('miningTarget', miningTarget  )
+        let difficulty = _MAXIMUM_TARGET.dividedBy(miningTarget).toFixed(0)
+        difficulty=parseInt(difficulty)
 
-        return miningTarget 
+        miningTarget = miningTarget.toNumber()
+
+        return {miningTarget, difficulty}
 
     }
 
