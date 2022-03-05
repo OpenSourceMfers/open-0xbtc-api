@@ -137,7 +137,7 @@ export default class MintEstimateTasks {
           // If there were 5% more blocks mined than expected then this is 5.  If there were 100% more blocks mined than expected then this is 100.
 
           //make it harder
-          miningTarget = miningTarget.minus(miningTarget.div(2000).times(excess_block_pct_extra));   //by up to 50 %
+          miningTarget = miningTarget.minus((miningTarget.div(2000).decimalPlaces(0,1)).times(excess_block_pct_extra));   //by up to 50 %
         
                     
         }else{
@@ -146,7 +146,7 @@ export default class MintEstimateTasks {
             let shortage_block_pct_extra = MintEstimateTasks.limitLessThan(shortage_block_pct.minus(100),new BigNumber(1000)); //always between 0 and 1000
 
           //make it easier
-          miningTarget = miningTarget.plus(miningTarget.div(2000).times(shortage_block_pct_extra));   //by up to 50 %
+          miningTarget = miningTarget.plus((miningTarget.div(2000).decimalPlaces(0,1)).times(shortage_block_pct_extra));   //by up to 50 %
         }
 
         //expect(miningTarget).to.eql( previousTarget.dividedBy(2) )
