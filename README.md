@@ -51,6 +51,12 @@ pm2 monit
 
 
 
+## running tasks 
+
+NODE_ENV=staging yarn tasks
+
+
+
 ## making a request 
 
 POST 
