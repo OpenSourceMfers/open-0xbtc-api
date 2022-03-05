@@ -11,6 +11,10 @@ import CoinDataCollector from './lib/coin-data-collector.js'
 
 import DataGhost from './lib/dataghost.js'
 
+import MintEstimateTasks from './tasks/mint-estimate-tasks.js'
+
+import SingletonLoopMethod from './lib/singleton-loop-method.js'
+
 import Web3 from 'web3'
 
 let envmode = process.env.NODE_ENV
@@ -26,10 +30,12 @@ let assetConfig = FileHelper.readJSONFile('./server/assetconfig.json')
     console.log('server config: ',serverConfig)
 
 
-    let mongoInterface = new MongoInterface( 'open_0xbtc_api_'.concat(envmode) ) 
+    let mongoInterface = new MongoInterface(  ) 
+    await mongoInterface.init(  'open_0xbtc_api_'.concat(envmode) )
 
-    let vibegraphInterface = new MongoInterface( 'vibegraph_'.concat(envmode) ) 
 
+    let vibegraphInterface = new MongoInterface( ) 
+    await vibegraphInterface.init(  'vibegraph_'.concat(envmode) )
 
     let web3 = new Web3( serverConfig.web3provider  )
 
@@ -38,20 +44,28 @@ let assetConfig = FileHelper.readJSONFile('./server/assetconfig.json')
     
     let coinDataCollector = new CoinDataCollector(web3, assetConfig,mongoInterface)
 
-    coinDataCollector.init(  ) 
+ //   coinDataCollector.init(  ) 
 
 
-    let apiInterface = new APIInterface(web3, mongoInterface, vibegraphInterface, serverConfig)
+  //  let apiInterface = new APIInterface(web3, mongoInterface, vibegraphInterface, serverConfig)
  
       
     let dataghost = new DataGhost()
-    dataghost.init(serverConfig)
+  //  dataghost.init(serverConfig)
 
     //let packetCustodian = new PacketCustodian(web3,mongoInterface, serverConfig)
 
 
+   // let estimateDifficultyPromise  =  
 
-}
+    let estDiffLoop = new SingletonLoopMethod(MintEstimateTasks.estimateDifficultyForAllMints, [vibegraphInterface])
+
+
+    console.log('meep1')
+    estDiffLoop.start(10)
+
+
+  }
 
  
  start()
