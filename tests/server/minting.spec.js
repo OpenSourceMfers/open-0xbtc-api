@@ -63,9 +63,13 @@ describe("Test", async function() {
 
 
       expect(secondEra).to.exist 
-      expect(secondEra.estimatedDifficulty).to.eql(2)
+      expect(secondEra.estimatedDifficultyTarget).to.eql('27165273620967659067343199073922372180847564914462641481119695344874048')
 
-    });
+
+      let thirdEra = await vibegraphInterface.findOne('erc20_difficulty_era', {difficultyEra:2}) 
+
+      expect(thirdEra.estimatedDifficultyTarget).to.eql('13582636810483829533671599536961186090423782457231320740559847672437048')
+    }); 
 
 
 });
