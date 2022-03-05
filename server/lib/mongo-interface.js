@@ -391,6 +391,23 @@ export default class MongoInterface  {
       }.bind(this));
 
     }
+    
+
+    async findOneSorted(collectionName,query,sortBy)
+    {
+    //  var query = { address: "Park Lane 38" };
+    //  var filter = { _id: 0, name: 1, address: 1 };
+      return new Promise(function(resolve, reject) {
+
+        this.dbo.collection(collectionName).findOne(query, {sort:sortBy},function(err, res) {
+           if (err) reject(err);
+           resolve(res);
+         });
+
+
+      }.bind(this));
+
+    }
 
     async findAll(collectionName,query,outputFields)
     {

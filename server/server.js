@@ -58,11 +58,10 @@ let assetConfig = FileHelper.readJSONFile('./server/assetconfig.json')
 
    // let estimateDifficultyPromise  =  
 
-    let estDiffLoop = new SingletonLoopMethod(MintEstimateTasks.estimateDifficultyForAllMints, [vibegraphInterface])
+    let estDiffLoop = new SingletonLoopMethod(MintEstimateTasks.estimateDifficultyForRemainingEras, [vibegraphInterface])
 
-
-    console.log('meep1')
-    estDiffLoop.start(10)
+ 
+    estDiffLoop.start(1000)
 
 
   }

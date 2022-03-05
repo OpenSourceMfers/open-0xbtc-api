@@ -24,14 +24,39 @@ const web3utils = Web3.utils
 export default class MintEstimateTasks {
 
 
-  
+    static async getLatestDifficultyAdjustEra(  mongoInterface  ){
 
-    static async estimateDifficultyForAllMints(mongoInterface){
+        let latestEra = await mongoInterface.findOneSorted('erc20_difficulty_era', {}, {difficultyEra: -1})
+
+        if(latestEra){
+
+            return latestEra.difficultyEra
+        }
+
+
+
+        return 0
+    }
+
+    static async estimateDifficultyForRemainingEras(mongoInterface){
+
+        let latestDiffEra = await MintEstimateTasks.getLatestDifficultyAdjustEra(mongoInterface)
+
+        console.log('latestDiffEra',latestDiffEra)
+        return await MintEstimateTasks.estimateDifficultyForAllMints(mongoInterface, latestDiffEra)
+    }
+
+
+
+
+
+    static async estimateDifficultyForAllMints( mongoInterface, initDiffAdjustEra){
         
         BigNumber.config({ ROUNDING_MODE: 1 })//round down    
 
 
-        let difficultyAdjustmentEra = 0
+
+        let difficultyAdjustmentEra = initDiffAdjustEra ? initDiffAdjustEra : 0
 
         let epochCount = difficultyAdjustmentEra*1024
 
