@@ -10,6 +10,7 @@ import BigNumber from 'bignumber.js'
 
 const web3utils = Web3.utils
 
+    BigNumber.config({ POW_PRECISION: 0 })
 
 
     //a little number
@@ -26,7 +27,7 @@ export default class MintEstimateTasks {
   
 
     static async estimateDifficultyForAllMints(mongoInterface){
-
+        
         BigNumber.config({ ROUNDING_MODE: 1 })//round down    
 
 
@@ -75,6 +76,9 @@ export default class MintEstimateTasks {
 
         console.log('estimateDifficultyTargetForEra', eraCount  )
         if(eraCount == 0){
+            console.log('miningtarget', _MAXIMUM_TARGET.toFixed(0))
+
+
             return {miningTarget:_MAXIMUM_TARGET.toNumber(),difficulty:1}
         }   
 
@@ -116,12 +120,13 @@ export default class MintEstimateTasks {
           console.log('ethBlocksSinceLastDifficultyPeriod',ethBlocksSinceLastDifficultyPeriod.toNumber())
          
           let excess_block_pct = (targetEthBlocksPerDiffPeriod.times(100)).div( ethBlocksSinceLastDifficultyPeriod );
-
+          
+          excess_block_pct = excess_block_pct.decimalPlaces(0,1)
 
           console.log('excess_block_pct',excess_block_pct.toNumber())
 
           let excess_block_pct_extra = MintEstimateTasks.limitLessThan(excess_block_pct.minus(100),new BigNumber(1000));
-          
+          excess_block_pct_extra = excess_block_pct_extra.decimalPlaces(0,1)
             
           console.log('excess_block_pct_extra',excess_block_pct_extra.toNumber())
 
@@ -147,6 +152,9 @@ export default class MintEstimateTasks {
         let difficulty = _MAXIMUM_TARGET.dividedBy(miningTarget).toFixed(0)
         difficulty=parseInt(difficulty)
 
+        
+        console.log('miningtarget', miningTarget.toFixed(0))
+
         miningTarget = miningTarget.toNumber()
 
         return {miningTarget, difficulty}
@@ -155,7 +163,7 @@ export default class MintEstimateTasks {
 
 
     static limitLessThan(a,b){
-        if(a > b) return b;
+        if(a.gt(b)) return b;
 
         return a;
     }
