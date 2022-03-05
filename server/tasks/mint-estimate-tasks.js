@@ -50,10 +50,10 @@ export default class MintEstimateTasks {
                 break; 
             }
 
-            console.log('miningTarget', miningTarget , difficulty )
+            console.log('miningTarget', miningTarget.toFixed(0) , difficulty.toFixed(0) )
 
 
-            let upserted = await mongoInterface.upsertOne('erc20_difficulty_era', {difficultyEra: difficultyAdjustmentEra }, {difficultyEra: difficultyAdjustmentEra,estimatedDifficultyTarget: miningTarget, estimatedDifficulty: parseInt(difficulty)} )
+            let upserted = await mongoInterface.upsertOne('erc20_difficulty_era', {difficultyEra: difficultyAdjustmentEra }, {difficultyEra: difficultyAdjustmentEra,estimatedDifficultyTarget: miningTarget.toFixed(0), estimatedDifficulty: (difficulty.toFixed(0))} )
             
             //console.log('upserted',upserted)
 
@@ -76,10 +76,10 @@ export default class MintEstimateTasks {
 
         console.log('estimateDifficultyTargetForEra', eraCount  )
         if(eraCount == 0){
-            console.log('miningtarget', _MAXIMUM_TARGET.toFixed(0))
+            //console.log('miningtarget 1st', _MAXIMUM_TARGET.toFixed(0))
 
 
-            return {miningTarget:_MAXIMUM_TARGET.toNumber(),difficulty:1}
+            return {miningTarget:_MAXIMUM_TARGET ,difficulty:new BigNumber(1)}
         }   
 
         let initialEpochCount = (eraCount-1)*1024 
@@ -102,6 +102,9 @@ export default class MintEstimateTasks {
         let previousEraData = await mongoInterface.findOne('erc20_difficulty_era', {difficultyEra: eraCount-1} )
         let previousTarget =  new BigNumber(previousEraData.estimatedDifficultyTarget)
 
+        console.log('previousTarget', previousEraData.estimatedDifficultyTarget, previousTarget.toFixed(0))
+
+        
 
         let ethBlocksSinceLastDifficultyPeriod =  new BigNumber(lastRowOfEra.blockNumber).minus(firstRowOfEra.blockNumber)
 
@@ -116,21 +119,21 @@ export default class MintEstimateTasks {
         if( ethBlocksSinceLastDifficultyPeriod.lt( targetEthBlocksPerDiffPeriod ) )
         {
 
-          console.log('targetEthBlocksPerDiffPeriod',targetEthBlocksPerDiffPeriod.toNumber())       
-          console.log('ethBlocksSinceLastDifficultyPeriod',ethBlocksSinceLastDifficultyPeriod.toNumber())
+          console.log('targetEthBlocksPerDiffPeriod',targetEthBlocksPerDiffPeriod.toFixed())       
+          console.log('ethBlocksSinceLastDifficultyPeriod',ethBlocksSinceLastDifficultyPeriod.toFixed())
          
           let excess_block_pct = (targetEthBlocksPerDiffPeriod.times(100)).div( ethBlocksSinceLastDifficultyPeriod );
           
           excess_block_pct = excess_block_pct.decimalPlaces(0,1)
 
-          console.log('excess_block_pct',excess_block_pct.toNumber())
+          console.log('excess_block_pct',excess_block_pct.toFixed(0))
 
           let excess_block_pct_extra = MintEstimateTasks.limitLessThan(excess_block_pct.minus(100),new BigNumber(1000));
           excess_block_pct_extra = excess_block_pct_extra.decimalPlaces(0,1)
             
-          console.log('excess_block_pct_extra',excess_block_pct_extra.toNumber())
+          console.log('excess_block_pct_extra',excess_block_pct_extra.toFixed(0))
 
-          console.log('miningTargetBefore',miningTarget.toNumber())
+          console.log('miningTargetBefore',miningTarget.toFixed(0))
           // If there were 5% more blocks mined than expected then this is 5.  If there were 100% more blocks mined than expected then this is 100.
 
           //make it harder
@@ -149,13 +152,13 @@ export default class MintEstimateTasks {
         //expect(miningTarget).to.eql( previousTarget.dividedBy(2) )
         //miningTarget = previousTarget.dividedBy(2)
 
-        let difficulty = _MAXIMUM_TARGET.dividedBy(miningTarget).toFixed(0)
-        difficulty=parseInt(difficulty)
+        let difficulty = _MAXIMUM_TARGET.dividedBy(miningTarget)//.toFixed(0)
+        //difficulty=parseInt(difficulty)
 
         
-        console.log('miningtarget', miningTarget.toFixed(0))
+       // console.log('miningtarget', miningTarget.toFixed(0))
 
-        miningTarget = miningTarget.toNumber()
+       // miningTarget = miningTarget.toNumber()
 
         return {miningTarget, difficulty}
 
