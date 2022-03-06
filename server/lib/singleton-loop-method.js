@@ -28,11 +28,14 @@ export default class SingletonLoopMethod {
 
     start(delayMs){
 
+        this.execute()
+
         let delay = delayMs ? delayMs : 1000
 
         
         this.interval = setInterval( this.execute.bind(this) , delay )
 
+        
     }
 
     stop(){

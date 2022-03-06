@@ -61,8 +61,11 @@ export default class MongoInterface  {
    async createCollectionUniqueIndexes()
     {
        
-      await this.createUniqueDualIndexOnCollection('app_epoch_counter', 'applicationId', 'epochHour')
-      await this.createUniqueDualIndexOnCollection('api_application', 'publicAddress', 'applicationId')
+      //await this.createUniqueDualIndexOnCollection('app_epoch_counter', 'applicationId', 'epochHour')
+      //await this.createUniqueDualIndexOnCollection('api_application', 'publicAddress', 'applicationId')
+
+      await this.createIndexOnCollection('erc20_mint', 'epochCount')
+      await this.createIndexOnCollection('erc20_difficulty_era', 'difficultyEra')
 
        /* await this.createUniqueIndexOnCollection('items', 'spawnLockId')
         await this.createUniqueIndexOnCollection('celestialgrid', 'uuid')

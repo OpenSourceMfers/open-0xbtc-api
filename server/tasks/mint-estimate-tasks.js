@@ -46,6 +46,22 @@ export default class MintEstimateTasks {
         return await MintEstimateTasks.estimateDifficultyForAllMints(mongoInterface, latestDiffEra)
     }
 
+    static async estimateHashrateForRemainingMints(mongoInterface){
+
+        let latestMintWithHashrate = await mongoInterface.findOneSorted('erc20_mint', { hashrate_avg8mint: {$exists: true } }, {epochCount: -1})
+          
+
+        let startEpochCount = 2
+        if(latestMintWithHashrate){
+            startEpochCount = latestMintWithHashrate.epochCount
+        }
+
+        console.log(' estimateHashrateForRemainingMints start at  ', startEpochCount)
+
+        
+        return await MintEstimateTasks.estimateHashrateForAllMints(mongoInterface, startEpochCount)
+    }
+
 
 
 
@@ -60,7 +76,7 @@ export default class MintEstimateTasks {
 
         let epochCount = difficultyAdjustmentEra*1024
 
-        if(epochCount == 0) {epochCount = 2 } //fix since first mint is epoch of 2 
+        if(epochCount < 2 ) {epochCount = 2 } //fix since first mint is epoch of 2 
 
 
        // let nextRow = await mongoInterface.findOne('erc20_mint',{epochCount: epochCount }) 
@@ -90,17 +106,14 @@ export default class MintEstimateTasks {
 
     }
 
-    static async estimateHashrateForAllMints(mongoInterface, initDiffAdjustEra){
+    static async estimateHashrateForAllMints(mongoInterface, initEpochCount){
         
         BigNumber.config({ ROUNDING_MODE: 1 })//round down    
 
+ 
+        let epochCount = initEpochCount ? initEpochCount : 0  // difficultyAdjustmentEra*1024
 
-
-        let difficultyAdjustmentEra = initDiffAdjustEra ? initDiffAdjustEra : 0
-
-        let epochCount = difficultyAdjustmentEra*1024
-
-        if(epochCount == 0) {epochCount = 2 } //fix since first mint is epoch of 2 
+        if(epochCount < 2 ) {epochCount = 2 } //fix since first mint is epoch of 2 
 
 
          
@@ -125,7 +138,7 @@ export default class MintEstimateTasks {
                 estimatedDifficultyTarget: mintData.estimatedDifficultyTarget
                 })
 
-                console.log('estimatedHashrate',epochCount, estimatedHashrate)
+                console.log('estimatedHashrate',epochCount, estimatedHashrate.hashrate_avg8mint.toFixed(0))
             } 
 
             epochCount++;

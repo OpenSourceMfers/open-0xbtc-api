@@ -58,10 +58,10 @@ let assetConfig = FileHelper.readJSONFile('./server/assetconfig.json')
 
    
     let estDiffLoop = new SingletonLoopMethod(MintEstimateTasks.estimateDifficultyForRemainingEras, [vibegraphInterface])
-
- 
     estDiffLoop.start(1000)
 
+    let estHashrateLoop = new SingletonLoopMethod(MintEstimateTasks.estimateHashrateForRemainingMints, [vibegraphInterface])
+    estHashrateLoop.start(1000)
 
   }
 
