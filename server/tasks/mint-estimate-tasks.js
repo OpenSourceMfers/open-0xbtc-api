@@ -26,7 +26,7 @@ export default class MintEstimateTasks {
 
     static async getLatestDifficultyAdjustEra(  mongoInterface,contractAddress  ){
 
-        let latestEra = await mongoInterface.findOneSorted('erc20_difficulty_era', {}, {difficultyEra: -1})
+        let latestEra = await mongoInterface.findOneSorted('erc20_difficulty_era', {contractAddress:contractAddress}, {difficultyEra: -1})
 
         if(latestEra){
 
@@ -83,10 +83,9 @@ export default class MintEstimateTasks {
 
         while(true){
 
-            let {miningTarget, difficulty} = await MintEstimateTasks.estimateDifficultyTargetForEra( difficultyAdjustmentEra , mongoInterface )
+            let {miningTarget, difficulty} = await MintEstimateTasks.estimateDifficultyTargetForEra( difficultyAdjustmentEra ,  contractAddress, mongoInterface )
 
-            
-            //console.log('mt', miningtarget)
+             
             if(!miningTarget){
                 break; 
             }
@@ -96,9 +95,7 @@ export default class MintEstimateTasks {
 
             let upserted = await mongoInterface.upsertOne('erc20_difficulty_era', {difficultyEra: difficultyAdjustmentEra }, {contractAddress: contractAddress , difficultyEra: difficultyAdjustmentEra,estimatedDifficultyTarget: miningTarget.toFixed(0), estimatedDifficulty: (difficulty.toFixed(0))} )
             
-            //console.log('upserted',upserted)
-
-
+            
             difficultyAdjustmentEra++
             //nextRow = await mongoInterface.findOne('erc20_mint',{epochCount: epochCount }) 
         }
@@ -114,13 +111,10 @@ export default class MintEstimateTasks {
         let epochCount = initEpochCount ? initEpochCount : 0  // difficultyAdjustmentEra*1024
 
         if(epochCount < 2 ) {epochCount = 2 } //fix since first mint is epoch of 2 
-
-
+ 
          
-        let nextRow = await mongoInterface.findOne('erc20_mint',{epochCount: epochCount }) 
-
-         
-
+        let nextRow = await mongoInterface.findOne('erc20_mint',{contractAddress:contractAddress, epochCount: epochCount }) 
+ 
         while(nextRow){
 
             let estimatedHashrate = await MintEstimateTasks.estimateHashrateForMint( epochCount, contractAddress, mongoInterface )
@@ -128,11 +122,11 @@ export default class MintEstimateTasks {
             
             if(estimatedHashrate && estimatedHashrate.hashrate_avg8mint){
 
-                let mintData = await MintEstimateTasks.getDataForMint( epochCount, mongoInterface )
+                let mintData = await MintEstimateTasks.getDataForMint( epochCount,contractAddress, mongoInterface )
 
                 let updated = await mongoInterface.updateOne(
                 'erc20_mint', 
-                {epochCount: epochCount}, 
+                {epochCount: epochCount,contractAddress:contractAddress}, 
                 {hashrate_avg8mint: estimatedHashrate.hashrate_avg8mint.toFixed(0),
                 estimatedDifficulty: mintData.estimatedDifficulty,
                 estimatedDifficultyTarget: mintData.estimatedDifficultyTarget
@@ -142,7 +136,7 @@ export default class MintEstimateTasks {
             } 
 
             epochCount++;
-            nextRow = await mongoInterface.findOne('erc20_mint',{epochCount: epochCount }) 
+            nextRow = await mongoInterface.findOne('erc20_mint',{contractAddress:contractAddress, epochCount: epochCount}) 
 
         }
     }
@@ -150,7 +144,7 @@ export default class MintEstimateTasks {
 
 
     //estimate the target 
-    static async estimateDifficultyTargetForEra(eraCount, mongoInterface){
+    static async estimateDifficultyTargetForEra(eraCount, contractAddress, mongoInterface){
 
         console.log('estimateDifficultyTargetForEra', eraCount  )
         if(eraCount == 0){
@@ -165,19 +159,19 @@ export default class MintEstimateTasks {
         if(initialEpochCount == 0) initialEpochCount = 2 
 
 
-        let firstRowOfEra =  await mongoInterface.findOne('erc20_mint',{epochCount: initialEpochCount }) 
+        let firstRowOfEra =  await mongoInterface.findOne('erc20_mint',{epochCount: initialEpochCount, contractAddress:contractAddress }) 
         if(!firstRowOfEra){
             console.log('WARN: no first era ')
             return {miningTarget:null}
         }
 
-        let lastRowOfEra = await mongoInterface.findOne('erc20_mint',{epochCount: ((eraCount)*1024) /*-1*/  })  // should be -1 ?
+        let lastRowOfEra = await mongoInterface.findOne('erc20_mint',{contractAddress:contractAddress, epochCount: ((eraCount)*1024) /*-1*/  })  // should be -1 ?
         if(!lastRowOfEra){
             console.log('WARN: no last era ')
             return  {miningTarget:null} 
         }
 
-        let previousEraData = await mongoInterface.findOne('erc20_difficulty_era', {difficultyEra: eraCount-1} )
+        let previousEraData = await mongoInterface.findOne('erc20_difficulty_era', {contractAddress:contractAddress, difficultyEra: eraCount-1} )
         let previousTarget =  new BigNumber(previousEraData.estimatedDifficultyTarget)
 
         console.log('previousTarget', previousEraData.estimatedDifficultyTarget, previousTarget.toFixed(0))
@@ -233,10 +227,7 @@ export default class MintEstimateTasks {
         let difficulty = _MAXIMUM_TARGET.dividedBy(miningTarget)//.toFixed(0)
         //difficulty=parseInt(difficulty)
 
-        
-       // console.log('miningtarget', miningTarget.toFixed(0))
-
-       // miningTarget = miningTarget.toNumber()
+         
 
         return {miningTarget, difficulty}
 
@@ -255,13 +246,13 @@ export default class MintEstimateTasks {
             return null 
         }
 
-        let startEpochData = await MintEstimateTasks.getDataForMint( startEpochCount,mongoInterface ) 
+        let startEpochData = await MintEstimateTasks.getDataForMint( startEpochCount,contractAddress,mongoInterface ) 
         if(!startEpochData) {
             console.log('no start epoch data')
             return null 
         }
 
-        let endEpochData = await MintEstimateTasks.getDataForMint( endEpochCount,mongoInterface ) 
+        let endEpochData = await MintEstimateTasks.getDataForMint( endEpochCount,contractAddress,mongoInterface ) 
         if(!endEpochData) {
             console.log('no end epoch data')
             return null
@@ -287,9 +278,9 @@ export default class MintEstimateTasks {
 
     }
 
-    static async getDataForMint(epochCount,mongoInterface){
+    static async getDataForMint(epochCount,contractAddress,mongoInterface){
 
-        let mintData = await mongoInterface.findOne('erc20_mint',{epochCount: epochCount }) 
+        let mintData = await mongoInterface.findOne('erc20_mint',{epochCount: epochCount,contractAddress:contractAddress }) 
 
         if(!mintData){
             return null 
@@ -298,7 +289,7 @@ export default class MintEstimateTasks {
 
         let eraCount = Math.floor( epochCount / 1024 )
 
-        let eraData = await mongoInterface.findOne('erc20_difficulty_era', {difficultyEra: eraCount}  )
+        let eraData = await mongoInterface.findOne('erc20_difficulty_era', {difficultyEra: eraCount, contractAddress:contractAddress}  )
 
         if(!eraData){
             return null 
