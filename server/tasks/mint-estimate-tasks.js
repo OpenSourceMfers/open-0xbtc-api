@@ -29,7 +29,7 @@ export default class MintEstimateTasks {
         let latestEra = await mongoInterface.findOneSorted('erc20_difficulty_era', {contractAddress:contractAddress}, {difficultyEra: -1})
 
         if(latestEra){
-
+            console.log('latest era found', latestEra.difficultyEra)
             return latestEra.difficultyEra
         }
 
@@ -42,7 +42,7 @@ export default class MintEstimateTasks {
 
         let latestDiffEra = await MintEstimateTasks.getLatestDifficultyAdjustEra(mongoInterface)
 
-        console.log('latestDiffEra',latestDiffEra)
+         
         return await MintEstimateTasks.estimateDifficultyForAllMints(mongoInterface,contractAddress, latestDiffEra)
     }
 

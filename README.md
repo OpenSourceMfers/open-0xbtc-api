@@ -69,3 +69,9 @@ rinkeby.starflask.com/api/v1/test
 
 {"requestType": "ERC721_balance_by_owner", "input":{"publicAddress":"0x99a848F6d8bb6D6Cd1A524B3C99a97e41e1E4b5A"}  }
  
+
+
+
+ ## Real data 
+ epoch 189848
+ target 2495467076135289833464849845656757122614752268471404094735851
