@@ -2,14 +2,14 @@
     "development":{
         "useHTTPS":false,
         "requireAuthentication":false,
-        "chainId":5,
-        "web3provider":"https://eth-goerli.alchemyapi.io/v2/" 
+        "chainId":4,
+        "web3provider":"https://eth-rinkeby.alchemyapi.io/v2/" 
     },
     "staging":{
         "useHTTPS":true,
         "requireAuthentication":false,
-        "chainId":5,
-        "web3provider":"https://eth-goerli.alchemyapi.io/v2/" 
+        "chainId":4,
+        "web3provider":"https://eth-rinkeby.alchemyapi.io/v2/" 
     },
     "production":{
         "useHTTPS":true,

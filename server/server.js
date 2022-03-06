@@ -9,6 +9,9 @@ import FileHelper from './lib/file-helper.js'
  
 import CoinDataCollector from './lib/coin-data-collector.js'
 
+import AssetHelper from './lib/asset-helper.js'
+
+
 import DataGhost from './lib/dataghost.js'
 
 import MintEstimateTasks from './tasks/mint-estimate-tasks.js'
@@ -55,12 +58,12 @@ let assetConfig = FileHelper.readJSONFile('./server/assetconfig.json')
 
     //let packetCustodian = new PacketCustodian(web3,mongoInterface, serverConfig)
 
-
-   
-    let estDiffLoop = new SingletonLoopMethod(MintEstimateTasks.estimateDifficultyForRemainingEras, [vibegraphInterface])
+    let contractAddress = AssetHelper.getMineableTokenAddressFromChainId( serverConfig.chainId ) 
+  
+    let estDiffLoop = new SingletonLoopMethod(MintEstimateTasks.estimateDifficultyForRemainingEras, [vibegraphInterface,contractAddress])
     estDiffLoop.start(1000)
 
-    let estHashrateLoop = new SingletonLoopMethod(MintEstimateTasks.estimateHashrateForRemainingMints, [vibegraphInterface])
+    let estHashrateLoop = new SingletonLoopMethod(MintEstimateTasks.estimateHashrateForRemainingMints, [vibegraphInterface,contractAddress])
     estHashrateLoop.start(1000)
 
   }

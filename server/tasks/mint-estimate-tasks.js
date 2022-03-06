@@ -24,7 +24,7 @@ const web3utils = Web3.utils
 export default class MintEstimateTasks {
 
 
-    static async getLatestDifficultyAdjustEra(  mongoInterface  ){
+    static async getLatestDifficultyAdjustEra(  mongoInterface,contractAddress  ){
 
         let latestEra = await mongoInterface.findOneSorted('erc20_difficulty_era', {}, {difficultyEra: -1})
 
@@ -38,17 +38,17 @@ export default class MintEstimateTasks {
         return 0
     }
 
-    static async estimateDifficultyForRemainingEras(mongoInterface){
+    static async estimateDifficultyForRemainingEras(mongoInterface,contractAddress){
 
         let latestDiffEra = await MintEstimateTasks.getLatestDifficultyAdjustEra(mongoInterface)
 
         console.log('latestDiffEra',latestDiffEra)
-        return await MintEstimateTasks.estimateDifficultyForAllMints(mongoInterface, latestDiffEra)
+        return await MintEstimateTasks.estimateDifficultyForAllMints(mongoInterface,contractAddress, latestDiffEra)
     }
 
-    static async estimateHashrateForRemainingMints(mongoInterface){
+    static async estimateHashrateForRemainingMints(mongoInterface, contractAddress){
 
-        let latestMintWithHashrate = await mongoInterface.findOneSorted('erc20_mint', { hashrate_avg8mint: {$exists: true } }, {epochCount: -1})
+        let latestMintWithHashrate = await mongoInterface.findOneSorted('erc20_mint', {contractAddress: contractAddress, hashrate_avg8mint: {$exists: true } }, {epochCount: -1})
           
 
         let startEpochCount = 2
@@ -59,14 +59,14 @@ export default class MintEstimateTasks {
         console.log(' estimateHashrateForRemainingMints start at  ', startEpochCount)
 
         
-        return await MintEstimateTasks.estimateHashrateForAllMints(mongoInterface, startEpochCount)
+        return await MintEstimateTasks.estimateHashrateForAllMints(mongoInterface, contractAddress, startEpochCount)
     }
 
 
 
 
 
-    static async estimateDifficultyForAllMints( mongoInterface, initDiffAdjustEra){
+    static async estimateDifficultyForAllMints( mongoInterface, contractAddress, initDiffAdjustEra){
         
         BigNumber.config({ ROUNDING_MODE: 1 })//round down    
 
@@ -94,7 +94,7 @@ export default class MintEstimateTasks {
             console.log('miningTarget', miningTarget.toFixed(0) , difficulty.toFixed(0) )
 
 
-            let upserted = await mongoInterface.upsertOne('erc20_difficulty_era', {difficultyEra: difficultyAdjustmentEra }, {difficultyEra: difficultyAdjustmentEra,estimatedDifficultyTarget: miningTarget.toFixed(0), estimatedDifficulty: (difficulty.toFixed(0))} )
+            let upserted = await mongoInterface.upsertOne('erc20_difficulty_era', {difficultyEra: difficultyAdjustmentEra }, {contractAddress: contractAddress , difficultyEra: difficultyAdjustmentEra,estimatedDifficultyTarget: miningTarget.toFixed(0), estimatedDifficulty: (difficulty.toFixed(0))} )
             
             //console.log('upserted',upserted)
 
@@ -106,7 +106,7 @@ export default class MintEstimateTasks {
 
     }
 
-    static async estimateHashrateForAllMints(mongoInterface, initEpochCount){
+    static async estimateHashrateForAllMints(mongoInterface,contractAddress, initEpochCount){
         
         BigNumber.config({ ROUNDING_MODE: 1 })//round down    
 
@@ -123,7 +123,7 @@ export default class MintEstimateTasks {
 
         while(nextRow){
 
-            let estimatedHashrate = await MintEstimateTasks.estimateHashrateForMint( epochCount, mongoInterface )
+            let estimatedHashrate = await MintEstimateTasks.estimateHashrateForMint( epochCount, contractAddress, mongoInterface )
 
             
             if(estimatedHashrate && estimatedHashrate.hashrate_avg8mint){
@@ -243,7 +243,7 @@ export default class MintEstimateTasks {
     }
 
 
-    static async estimateHashrateForMint(epochCount, mongoInterface){
+    static async estimateHashrateForMint(epochCount, contractAddress, mongoInterface){
 
 
         let averageBlockSpan = 8//number of blocks to average over 

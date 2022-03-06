@@ -5,6 +5,8 @@ import MongoInterface from '../lib/mongo-interface.js'
 
 import MintEstimateTasks from './mint-estimate-tasks.js'
 
+import AssetHelper from '../lib/asset-helper.js'
+
 import FileHelper from '../lib/file-helper.js'
   
 import Web3 from 'web3'
@@ -15,7 +17,7 @@ let envmode = process.env.NODE_ENV
 let serverConfigFile = FileHelper.readJSONFile('./server/serverconfig.json')
 let serverConfig = serverConfigFile[envmode]
 
-let assetConfig = FileHelper.readJSONFile('./server/assetconfig.json')
+//let assetConfig = FileHelper.readJSONFile('./server/assetconfig.json')
  
 
   async function start(){
@@ -34,9 +36,10 @@ let assetConfig = FileHelper.readJSONFile('./server/assetconfig.json')
 
     console.log('web3 ready with provider ',serverConfig.web3provider )
 
+    let contractAddress = AssetHelper.getMineableTokenAddressFromChainId( serverConfig.chainId ) 
     
-    await MintEstimateTasks.estimateDifficultyForAllMints(vibegraphInterface)
-    await MintEstimateTasks.estimateHashrateForAllMints(vibegraphInterface)
+    await MintEstimateTasks.estimateDifficultyForAllMints(vibegraphInterface, contractAddress)
+    await MintEstimateTasks.estimateHashrateForAllMints(vibegraphInterface, contractAddress)
 
 
 }

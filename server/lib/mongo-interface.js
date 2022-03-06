@@ -64,9 +64,13 @@ export default class MongoInterface  {
       //await this.createUniqueDualIndexOnCollection('app_epoch_counter', 'applicationId', 'epochHour')
       //await this.createUniqueDualIndexOnCollection('api_application', 'publicAddress', 'applicationId')
 
-      await this.createIndexOnCollection('erc20_mint', 'epochCount')
-      await this.createIndexOnCollection('erc20_difficulty_era', 'difficultyEra')
-
+     // await this.createIndexOnCollection('erc20_mint', 'epochCount')
+ 
+      await this.createUniqueDualIndexOnCollection('erc20_difficulty_era', 'difficultyEra', 'contractAddress')
+     
+      await this.createUniqueDualIndexOnCollection('erc20_mint', 'epochCount', 'contractAddress')
+     
+     
        /* await this.createUniqueIndexOnCollection('items', 'spawnLockId')
         await this.createUniqueIndexOnCollection('celestialgrid', 'uuid')
         await this.createUniqueIndexOnCollection('marketOrder', 'invoiceUUID')
