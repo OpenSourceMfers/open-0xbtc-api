@@ -51,13 +51,12 @@ let assetConfig = FileHelper.readJSONFile('./server/assetconfig.json')
  
       
     let dataghost = new DataGhost()
-  //  dataghost.init(serverConfig)
+    dataghost.init(serverConfig)
 
     //let packetCustodian = new PacketCustodian(web3,mongoInterface, serverConfig)
 
 
-   // let estimateDifficultyPromise  =  
-
+   
     let estDiffLoop = new SingletonLoopMethod(MintEstimateTasks.estimateDifficultyForRemainingEras, [vibegraphInterface])
 
  

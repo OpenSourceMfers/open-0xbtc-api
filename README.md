@@ -11,6 +11,10 @@
 -write a script that loops through all erc20-mint in order to generate estimated hashrate for each record 
 
  
+
+ -try to connect to bootstrap.0xbtc.io -> this is the p2p bootstrapping server.  This will help build a list of other nodes to connect to.  It will also provide a list of datahash checkpoints..  Nodes which are not abiding by these checkpoints will be ignored/blocked.  
+
+ -build my own p2p engine using mongo 
  
 
 
