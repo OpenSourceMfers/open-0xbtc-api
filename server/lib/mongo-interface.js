@@ -1,9 +1,15 @@
 import { default as mongodb } from 'mongodb';
 let MongoClient = mongodb.MongoClient;
 
+import FileHelper from './file-helper.js'
+
+
  //var mongo = require('mongodb');
 // var mongoClient = require('mongodb').MongoClient;
 //var defaulturl = "mongodb://localhost:27017";
+
+
+let databaseIndexConfig = FileHelper.readJSONFile('./server/databaseIndexConfig.json')
 
 export default class MongoInterface  {
 
@@ -54,56 +60,19 @@ export default class MongoInterface  {
         if(config && config.apiMode == true) return //do not make indexes if api mode
 
         //set up database constraints to prevent data corruption
-         await this.createCollectionUniqueIndexes()
+         await this.createCollectionUniqueIndexes(databaseIndexConfig)
     }
 
 
-   async createCollectionUniqueIndexes()
+   async createCollectionUniqueIndexes(databaseIndexConfig)
     {
-       
-      //await this.createUniqueDualIndexOnCollection('app_epoch_counter', 'applicationId', 'epochHour')
-      //await this.createUniqueDualIndexOnCollection('api_application', 'publicAddress', 'applicationId')
+      databaseIndexConfig["Index"].map(async (row) => await this.createIndexOnCollection(...row))
 
-     // await this.createIndexOnCollection('erc20_mint', 'epochCount')
- 
-      await this.createUniqueDualIndexOnCollection('erc20_difficulty_era', 'difficultyEra', 'contractAddress')
-     
-      await this.createUniqueDualIndexOnCollection('erc20_mint', 'epochCount', 'contractAddress')
-     
-     
-       /* await this.createUniqueIndexOnCollection('items', 'spawnLockId')
-        await this.createUniqueIndexOnCollection('celestialgrid', 'uuid')
-        await this.createUniqueIndexOnCollection('marketOrder', 'invoiceUUID')
-        await this.createUniqueIndexOnCollection('activePlayers', 'publicAddress')
+      databaseIndexConfig["UniqueIndex"].map(async (row) => await this.createUniqueIndexOnCollection(...row))
 
-        await this.createIndexOnCollection('equipmentSlots', 'unitId')//speed up retrival
-        //await this.createIndexOnCollection('equipmentSlots', 'targetUnitId')
+      databaseIndexConfig["DualIndex"].map(async (row) => await this.createDualIndexOnCollection(...row))
 
-        await this.createDualIndexOnCollection('units', 'grid', 'instanceUUID')
-
-        await this.createUniqueDualIndexOnCollection('equipmentSlots', 'unitId', 'slotId')
-        await this.createUniqueDualIndexOnCollection('gridphases', 'gridUUID', 'instanceUUID')
-        //await this.createUniqueSparseDualIndexOnCollection('items', 'beingSalvagedFromItemId', 'internalName') //prevent item duping via salvaging
-
-
-        //make a unique index of items that are 'beingSalvagedFromItemId' to prevent dupes
-        this.dbo.collection('items').createIndex(
-           { 'beingSalvagedFromItemId': 1,  'internalName': 1 },
-            {  partialFilterExpression: { beingSalvagedFromItemId: { $exists: true } }, unique: true  } )
-
-        this.dbo.collection('items').createIndex(
-           { 'escrowedForProductionSlot': 1,  'internalName': 1 },
-            {  partialFilterExpression: { escrowedForProductionSlot: { $exists: true } }, unique: true  } )
-
-
-        //unitspawnlockId can either be null or it must be unique , it is based on the unpacking items spawnlock id
-
-
-          this.dbo.collection('units').createIndex(
-             { 'unitUnpackagingLockId': 1  },
-              {  partialFilterExpression: { unitUnpackagingLockId: { $exists: true } }, unique: true  } )
-        */
-
+      databaseIndexConfig["DualUniqueIndex"].map(async (row) => await this.createUniqueDualIndexOnCollection(...row))
     }
 
 

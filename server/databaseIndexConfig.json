@@ -1,0 +1,13 @@
+{
+
+    "Index":[],
+    "UniqueIndex":[],
+    "DualIndex":[],
+    "DualUniqueIndex":[
+
+        ["erc20_difficulty_era", "difficultyEra", "contractAddress"],
+        ["erc20_mint", "epochCount", "contractAddress"]
+
+    ]
+
+}
