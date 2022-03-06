@@ -81,6 +81,9 @@ export default class MintEstimateTasks {
 
        // let nextRow = await mongoInterface.findOne('erc20_mint',{epochCount: epochCount }) 
 
+
+       console.log('estimateDifficultyForAllMints', epochCount)
+
         while(true){
 
             let {miningTarget, difficulty} = await MintEstimateTasks.estimateDifficultyTargetForEra( difficultyAdjustmentEra ,  contractAddress, mongoInterface )
