@@ -45,12 +45,12 @@ let assetConfig = FileHelper.readJSONFile('./server/assetconfig.json')
     console.log('web3 ready with provider ',serverConfig.web3provider )
 
     
-    let coinDataCollector = new CoinDataCollector(web3, assetConfig,mongoInterface)
+  //  let coinDataCollector = new CoinDataCollector(web3, assetConfig,mongoInterface)
 
  //   coinDataCollector.init(  ) 
 
 
-  //  let apiInterface = new APIInterface(web3, mongoInterface, vibegraphInterface, serverConfig)
+    let apiInterface = new APIInterface(web3, mongoInterface, vibegraphInterface, serverConfig)
  
       
     let dataghost = new DataGhost()

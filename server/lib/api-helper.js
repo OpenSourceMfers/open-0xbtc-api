@@ -8,6 +8,9 @@
     import ApplicationManager from './application-manager.js'
     
  
+
+    const MAX_ROWS_RETURNED = 500;
+
     export default class APIHelper  {
     
         constructor(   ){
@@ -19,6 +22,11 @@
         static async handleApiRequest(request, appId, wolfpackInterface, mongoInterface){
            
             let inputData = request.body 
+
+
+
+
+
             
 
          
@@ -59,6 +67,22 @@
                 return {success:true, input: inputParameters, output: results  }
             }
 
+
+            //build this request 
+            if(inputData.requestType == 'ERC20_mints'){
+
+                //MAX_ROWS_RETURNED
+ 
+                let inputParameters = inputData.input
+
+                let {contractAddress, startEpoch, size, spacing } = inputData.input
+                
+                let results = await APIHelper.findERC20Mints(wolfpackInterface, contractAddress, startEpoch, size, spacing)
+
+                await ApplicationManager.logNewRequest(appId,inputData.requestType,inputParameters,results, mongoInterface)
+
+                return {success:true, input: inputParameters, output: results  }
+            }
 
             if(inputData.requestType == 'ERC20_burned_by_from'){
  
@@ -144,68 +168,9 @@
 
                 return {success:true, input: inputParameters, output: results  }
             }
-
-
-
-            if(inputData.requestType == 'all_coin_data'){
-                let inputParameters = inputData.input
-   
-                let results = await APIHelper.findAllCoinData(  mongoInterface)
-
-                return {success:true, input: inputParameters, output: results  }
-            }
  
 
-
-
-
-             //Name Deprecated
-            if(inputData.requestType == 'burned_ERC20_by_from'){
  
-                let inputParameters = inputData.input
-
-                let from = inputParameters.from 
-
-                let results = await APIHelper.findBurnedERC20ByFrom(from, wolfpackInterface)
-
-                await ApplicationManager.logNewRequest(appId,inputData.requestType,inputParameters,results, mongoInterface)
-
-                return {success:true, input: inputParameters, output: results  }
-            }
-
-             //Name Deprecated
-            if(inputData.requestType == 'burned_ERC20_by_token'){
- 
-                let inputParameters = inputData.input
-
-                let token = inputParameters.token 
-
-                let results = await APIHelper.findBurnedERC20ByToken(token, wolfpackInterface)
-
-                await ApplicationManager.logNewRequest(appId,inputData.requestType,inputParameters,results, mongoInterface)
-
-                return {success:true, input: inputParameters, output: results  }
-            }
-
-
-
-               //Name Deprecated
-               if(inputData.requestType == 'all_ERC721'){
- 
-                let inputParameters = inputData.input
-
-                let publicAddress = inputParameters.publicAddress 
-
-                
-
-                let results = await APIHelper.findAllERC721ByOwner(publicAddress, wolfpackInterface)
-
-                await ApplicationManager.logNewRequest(appId,inputData.requestType,inputParameters,results, mongoInterface)
-
-                return {success:true, input: inputParameters, output: results  }
-            } 
-
-
 
             return {success:false}
         }
@@ -238,6 +203,30 @@
             tokenAddress = web3utils.toChecksumAddress(tokenAddress)
             return await mongoInterface.findAll('erc20_burned',{token: tokenAddress })
         }
+
+
+        static async findERC20Mints(mongoInterface, contractAddress, startEpoch, size, spacing){
+
+            contractAddress = web3utils.toChecksumAddress(contractAddress)
+
+            let epochArray = [startEpoch]
+
+            if(!spacing || isNaN(spacing) || spacing < 1) spacing = 1 
+
+            if(!size || isNaN(size) || size < 1) size = 1 
+
+            if(size > MAX_ROWS_RETURNED) size = MAX_ROWS_RETURNED
+            
+            let nextEpoch = startEpoch
+            for(let i=1;i<size;i++){
+                nextEpoch += parseInt(spacing) 
+                epochArray.push(nextEpoch)
+            }
+            
+
+            return await mongoInterface.findAll('erc20_mint',{contractAddress: contractAddress, epochCount: {$in: epochArray} })
+        }
+
 
         
 

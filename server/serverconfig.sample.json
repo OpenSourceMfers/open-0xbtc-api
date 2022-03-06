@@ -8,8 +8,8 @@
     "staging":{
         "useHTTPS":true,
         "requireAuthentication":false,
-        "chainId":4,
-        "web3provider":"https://eth-rinkeby.alchemyapi.io/v2/" 
+        "chainId":1,
+        "web3provider":"https://eth-mainnet.alchemyapi.io/v2/" 
     },
     "production":{
         "useHTTPS":true,
