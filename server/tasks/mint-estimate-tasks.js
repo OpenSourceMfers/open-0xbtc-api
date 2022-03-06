@@ -63,9 +63,9 @@ export default class MintEstimateTasks {
         if(epochCount == 0) {epochCount = 2 } //fix since first mint is epoch of 2 
 
 
-        let nextRow = await mongoInterface.findOne('erc20_mint',{epochCount: epochCount }) 
+       // let nextRow = await mongoInterface.findOne('erc20_mint',{epochCount: epochCount }) 
 
-        while(nextRow){
+        while(true){
 
             let {miningTarget, difficulty} = await MintEstimateTasks.estimateDifficultyTargetForEra( difficultyAdjustmentEra , mongoInterface )
 
@@ -84,14 +84,54 @@ export default class MintEstimateTasks {
 
 
             difficultyAdjustmentEra++
-            nextRow = await mongoInterface.findOne('erc20_mint',{epochCount: epochCount }) 
+            //nextRow = await mongoInterface.findOne('erc20_mint',{epochCount: epochCount }) 
         }
 
 
     }
 
-    static async estimateHashrateForAllMints(mongoInterface){
+    static async estimateHashrateForAllMints(mongoInterface, initDiffAdjustEra){
         
+        BigNumber.config({ ROUNDING_MODE: 1 })//round down    
+
+
+
+        let difficultyAdjustmentEra = initDiffAdjustEra ? initDiffAdjustEra : 0
+
+        let epochCount = difficultyAdjustmentEra*1024
+
+        if(epochCount == 0) {epochCount = 2 } //fix since first mint is epoch of 2 
+
+
+         
+        let nextRow = await mongoInterface.findOne('erc20_mint',{epochCount: epochCount }) 
+
+         
+
+        while(nextRow){
+
+            let estimatedHashrate = await MintEstimateTasks.estimateHashrateForMint( epochCount, mongoInterface )
+
+            
+            if(estimatedHashrate && estimatedHashrate.hashrate_avg8mint){
+
+                let mintData = await MintEstimateTasks.getDataForMint( epochCount, mongoInterface )
+
+                let updated = await mongoInterface.updateOne(
+                'erc20_mint', 
+                {epochCount: epochCount}, 
+                {hashrate_avg8mint: estimatedHashrate.hashrate_avg8mint.toFixed(0),
+                estimatedDifficulty: mintData.estimatedDifficulty,
+                estimatedDifficultyTarget: mintData.estimatedDifficultyTarget
+                })
+
+                console.log('estimatedHashrate',epochCount, estimatedHashrate)
+            } 
+
+            epochCount++;
+            nextRow = await mongoInterface.findOne('erc20_mint',{epochCount: epochCount }) 
+
+        }
     }
 
 
@@ -189,6 +229,71 @@ export default class MintEstimateTasks {
 
     }
 
+
+    static async estimateHashrateForMint(epochCount, mongoInterface){
+
+
+        let averageBlockSpan = 8//number of blocks to average over 
+
+        let startEpochCount = epochCount-averageBlockSpan 
+        let endEpochCount = epochCount 
+
+        if(startEpochCount<2){
+            return null 
+        }
+
+        let startEpochData = await MintEstimateTasks.getDataForMint( startEpochCount,mongoInterface ) 
+        if(!startEpochData) {
+            console.log('no start epoch data')
+            return null 
+        }
+
+        let endEpochData = await MintEstimateTasks.getDataForMint( endEpochCount,mongoInterface ) 
+        if(!endEpochData) {
+            console.log('no end epoch data')
+            return null
+         }
+
+        let eraMiningDifficulty = new BigNumber(endEpochData.estimatedDifficulty)
+
+
+        // the number of blocks between this mint and the mint 8 mints ago 
+        let blockNumberDelta = new BigNumber(endEpochData.blockNumber).minus(new BigNumber(startEpochData.blockNumber))
+
+         
+        let ethBlockSolveTimeSeconds = 15 
+
+        let averageBlockSolveTimeSeconds = (blockNumberDelta.times( ethBlockSolveTimeSeconds )).dividedBy( averageBlockSpan )
+        
+          
+        let difficultyFactor = eraMiningDifficulty.times( 4194304 )
+        let hashrate_avg8mint = difficultyFactor.dividedBy( averageBlockSolveTimeSeconds )
+
+         
+        return {hashrate_avg8mint}
+
+    }
+
+    static async getDataForMint(epochCount,mongoInterface){
+
+        let mintData = await mongoInterface.findOne('erc20_mint',{epochCount: epochCount }) 
+
+        if(!mintData){
+            return null 
+        }
+
+
+        let eraCount = Math.floor( epochCount / 1024 )
+
+        let eraData = await mongoInterface.findOne('erc20_difficulty_era', {difficultyEra: eraCount}  )
+
+        if(!eraData){
+            return null 
+        }
+
+        return Object.assign( mintData , { estimatedDifficulty: eraData.estimatedDifficulty, estimatedDifficultyTarget: eraData.estimatedDifficultyTarget } )
+
+    }
 
     static limitLessThan(a,b){
         if(a.gt(b)) return b;
