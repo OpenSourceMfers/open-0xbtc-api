@@ -236,7 +236,7 @@
             let mint  = await mongoInterface.findOneSorted('erc20_mint', {contractAddress: contractAddress, hashrate_avg8mint: {$exists: true } }, {epochCount: -1})
 
             if(mint){
-                return epochCount
+                return mint.epochCount
             }
 
             return 0 
