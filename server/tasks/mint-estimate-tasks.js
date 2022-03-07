@@ -158,14 +158,15 @@ export default class MintEstimateTasks {
 
             return {miningTarget:_MAXIMUM_TARGET ,difficulty:new BigNumber(1)}
         }   
-
+        
+        const deploymentBlock = 5039000 
 
         //at which epoch is the 'block number' stored ?  1024 ? 'latestDifficultyPeriodStarted'
 
         const INITIAL_OFFSET = 0  //is this correct? 
         const FINAL_OFFSET = 0 //is this correct ? 
 
-        const deploymentBlock = 5039000 
+        
 
 
         let initialEpochCount = ( (eraCount-1)*1024 ) + INITIAL_OFFSET 
@@ -220,13 +221,11 @@ export default class MintEstimateTasks {
           
           excess_block_pct = excess_block_pct.decimalPlaces(0,1)
 
-          console.log('excess_block_pct',excess_block_pct.toFixed(0))
-
+           
           let excess_block_pct_extra = MintEstimateTasks.limitLessThan(excess_block_pct.minus(100),new BigNumber(1000));
           excess_block_pct_extra = excess_block_pct_extra.decimalPlaces(0,1)
             
-          console.log('excess_block_pct_extra',excess_block_pct_extra.toFixed(0))
-
+          
           console.log('miningTargetBefore',miningTarget.toFixed(0))
           // If there were 5% more blocks mined than expected then this is 5.  If there were 100% more blocks mined than expected then this is 100.
 
@@ -237,7 +236,11 @@ export default class MintEstimateTasks {
         }else{
             let shortage_block_pct = (ethBlocksSinceLastDifficultyPeriod.times(100)).div( targetEthBlocksPerDiffPeriod );
 
+            shortage_block_pct = shortage_block_pct.decimalPlaces(0,1)
+
             let shortage_block_pct_extra = MintEstimateTasks.limitLessThan(shortage_block_pct.minus(100),new BigNumber(1000)); //always between 0 and 1000
+
+            shortage_block_pct_extra = shortage_block_pct_extra.decimalPlaces(0,1)
 
           //make it easier
           miningTarget = miningTarget.plus((miningTarget.div(2000).decimalPlaces(0,1)).times(shortage_block_pct_extra));   //by up to 50 %

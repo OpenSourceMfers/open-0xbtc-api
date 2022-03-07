@@ -58,7 +58,7 @@ pm2 monit
 
 ## running tasks 
 
-NODE_ENV=staging yarn tasks
+NODE_ENV=production yarn tasks
 
 
 
@@ -77,3 +77,7 @@ rinkeby.starflask.com/api/v1/test
  ## Real data 
  epoch 189848
  target 2495467076135289833464849845656757122614752268471404094735851
+
+
+ incorrect estimate : 
+ 2524027618941620966840188517530950056550152052792050928133628
