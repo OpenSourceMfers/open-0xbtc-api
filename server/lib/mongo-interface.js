@@ -231,6 +231,22 @@ export default class MongoInterface  {
 
     }
 
+    async updateManyCustom(collectionName,query,newvalues)
+    {
+
+       
+      return new Promise(function(resolve, reject) {
+
+        this.dbo.collection(collectionName).updateMany(query,newvalues,function(err, res) {
+           if (err) reject(err);
+           resolve(res);
+         });
+
+
+      }.bind(this));
+
+    }
+
     async updateOne(collectionName,query,newvalues)
     {
 

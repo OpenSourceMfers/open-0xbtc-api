@@ -3,6 +3,7 @@
 
 import MongoInterface from '../lib/mongo-interface.js'
 
+import DatabaseTasks from './database-tasks.js'
 import MintEstimateTasks from './mint-estimate-tasks.js'
 
 import AssetHelper from '../lib/asset-helper.js'
@@ -37,7 +38,10 @@ let serverConfig = serverConfigFile[envmode]
     console.log('web3 ready with provider ',serverConfig.web3provider )
 
     let contractAddress = AssetHelper.getMineableTokenAddressFromChainId( serverConfig.chainId ) 
-    
+
+
+    await DatabaseTasks.deleteDifficultyAndHashrateData(vibegraphInterface, contractAddress)
+
     await MintEstimateTasks.estimateDifficultyForAllMints(vibegraphInterface, contractAddress)
     await MintEstimateTasks.estimateHashrateForAllMints(vibegraphInterface, contractAddress)
 

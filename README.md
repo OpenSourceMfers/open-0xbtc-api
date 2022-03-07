@@ -6,8 +6,10 @@
  
 
 
-### TODO
- 
+### TODO 
+
+ -make a task that wipes all difficulty era and hashrate data (not vibegraph data) -> new table ? 
+
  
  -store checkpoint datahashes of this data (sets of mints -> merkle tree ?   -> store in era row ?  no ->  separate table ) 
 
