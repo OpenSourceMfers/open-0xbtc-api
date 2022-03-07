@@ -159,9 +159,20 @@ export default class MintEstimateTasks {
             return {miningTarget:_MAXIMUM_TARGET ,difficulty:new BigNumber(1)}
         }   
 
-        let initialEpochCount = (eraCount-1)*1024 
 
-        if(initialEpochCount == 0) initialEpochCount = 2 
+        //at which epoch is the 'block number' stored ?  1024 ? 'latestDifficultyPeriodStarted'
+
+        const INITIAL_OFFSET = 0  //is this correct? 
+        const FINAL_OFFSET = 0 //is this correct ? 
+
+        const deploymentBlock = 5039000 
+
+
+        let initialEpochCount = ( (eraCount-1)*1024 ) + INITIAL_OFFSET 
+
+        if(initialEpochCount < 2 ) initialEpochCount = 2 
+
+        let finalEpochCount = eraCount * 1024 + FINAL_OFFSET 
 
 
         let firstRowOfEra =  await mongoInterface.findOne('erc20_mint',{epochCount: initialEpochCount, contractAddress:contractAddress }) 
@@ -170,7 +181,7 @@ export default class MintEstimateTasks {
             return {miningTarget:null}
         }
 
-        let lastRowOfEra = await mongoInterface.findOne('erc20_mint',{contractAddress:contractAddress, epochCount: ((eraCount)*1024) /*-1*/  })  // should be -1 ?
+        let lastRowOfEra = await mongoInterface.findOne('erc20_mint',{contractAddress:contractAddress, epochCount: finalEpochCount  })  // should be -1 ?
         if(!lastRowOfEra){
             console.log('WARN: no last era ')
             return  {miningTarget:null} 
@@ -184,6 +195,12 @@ export default class MintEstimateTasks {
         
 
         let ethBlocksSinceLastDifficultyPeriod =  new BigNumber(lastRowOfEra.blockNumber).minus(firstRowOfEra.blockNumber)
+
+
+        //the 'latestDifficultyPeriodStarted' variable is stored upon contract deployment, not on the first time the mining occurs 
+        if( eraCount == 1 ){
+            ethBlocksSinceLastDifficultyPeriod =  new BigNumber(lastRowOfEra.blockNumber).minus(deploymentBlock)
+        }
 
         let epochsMined =  new BigNumber(1024);
 
