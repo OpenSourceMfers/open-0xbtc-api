@@ -209,6 +209,11 @@
 
             contractAddress = web3utils.toChecksumAddress(contractAddress)
 
+
+            if(!startEpoch){
+                startEpoch = await APIHelper.findLatestMintEpoch( mongoInterface,contractAddress  )
+            }
+
             let epochArray = [startEpoch]
 
             if(!spacing || isNaN(spacing) || spacing < 1) spacing = 1 
@@ -219,7 +224,7 @@
             
             let nextEpoch = startEpoch
             for(let i=1;i<size;i++){
-                nextEpoch += parseInt(spacing) 
+                nextEpoch -= parseInt(spacing) 
                 epochArray.push(nextEpoch)
             }
             
@@ -227,7 +232,15 @@
             return await mongoInterface.findAll('erc20_mint',{contractAddress: contractAddress, epochCount: {$in: epochArray} })
         }
 
+        static async findLatestMintEpoch(mongoInterface, contractAddress){
+            let mint  = await mongoInterface.findOneSorted('erc20_mint', {contractAddress: contractAddress, hashrate_avg8mint: {$exists: true } }, {epochCount: -1})
 
+            if(mint){
+                return epochCount
+            }
+
+            return 0 
+        }
         
 
         static async findAllCoinData( mongoInterface){
