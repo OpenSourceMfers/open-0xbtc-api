@@ -8,14 +8,12 @@
 
 ### TODO 
 
- -make a task that wipes all difficulty era and hashrate data (not vibegraph data) -> new table ? 
-
- 
+  
  -store checkpoint datahashes of this data (sets of mints -> merkle tree ?   -> store in era row ?  no ->  separate table ) 
 
  -try to connect to bootstrap.0xbtc.io -> this is the p2p bootstrapping server.  This will help build a list of other nodes to connect to.  It will also provide a list of datahash checkpoints..  Nodes which are not abiding by these checkpoints will be ignored/blocked.  
 
- -build my own p2p engine using mongo (class)
+ -build   p2p engine using mongo (class) so nodes can share data (speed up so they dont need to fetch from vibegraph)
  
 
 
