@@ -6,8 +6,7 @@ import MongoInterface from './lib/mongo-interface.js'
 import APIInterface from './lib/api-interface.js'
 
 import FileHelper from './lib/file-helper.js'
- 
-import CoinDataCollector from './lib/coin-data-collector.js'
+  
 
 import AssetHelper from './lib/asset-helper.js'
 
@@ -43,11 +42,6 @@ let assetConfig = FileHelper.readJSONFile('./server/assetconfig.json')
     let web3 = new Web3( serverConfig.web3provider  )
 
     console.log('web3 ready with provider ',serverConfig.web3provider )
-
-    
-  //  let coinDataCollector = new CoinDataCollector(web3, assetConfig,mongoInterface)
-
- //   coinDataCollector.init(  ) 
 
 
     let apiInterface = new APIInterface(web3, mongoInterface, vibegraphInterface, serverConfig)
