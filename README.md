@@ -23,14 +23,16 @@
 ```
 install Nodejs 14
 
+install MongoDB Community Edition
+
 ```
 
 
 ### Development commands
 ```
 npm install
-npm run server-dev  (in terminal 1)
-npm run dev  (in terminal 2)
+npm run server-dev  (in terminal 1 for api service)
+npm run dev  (in terminal 2 for live-watched web server)
 ```
 
 
