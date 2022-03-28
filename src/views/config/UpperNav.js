@@ -3,7 +3,7 @@ const config={
   "dropdowns":[
     {"title":"Navigation","rows":[
       {"title":"Home","url":"/"},    
-      {"title":"Official Docs","url":"https://docs.starflask.com"},   
+      {"title":"API Docs","url":"https://apidocs.0xbtc.io"},   
       {"title":"Dashboard","url":"/dashboard"} 
     ]}  
   ]

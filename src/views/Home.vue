@@ -11,14 +11,8 @@
         <div class=" "></div>
         <div class="flex md:flex-row flex-col">
           <div class="md:w-1/2 w-full mt-8 py-8 px-8 text-center">
-            <div class="text-white text-xl">Ethereum API Made Simple.</div>
-
-            <div
-              class="m-4 p-4 border-2 border-white"
-              style="max-width: 200px; min-height: 200px; margin: 24px auto"
-            >
-              <AnimatedTextArea v-bind:inputText="frontpageSampleCode" />
-            </div>
+            
+          
 
             <a :href="getRouteTo('docs')" class="text-white text-lg">
               Read the docs

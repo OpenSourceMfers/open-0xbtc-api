@@ -190,8 +190,7 @@ export default class APIInterface  {
 
 
  
-      /*
-
+      //host static files from dist for webpage 
       const staticFileMiddleware = express.static('dist');
       app.use(staticFileMiddleware);
       app.use(history({
@@ -200,7 +199,7 @@ export default class APIInterface  {
       }));
       app.use(staticFileMiddleware);
 
-      */
+      
 
 
       app.listen(apiPort, () => {
