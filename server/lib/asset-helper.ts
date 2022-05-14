@@ -2,7 +2,7 @@
 
 
 import web3utils from 'web3-utils'
-import FileHelper from './file-helper.js'
+import FileHelper from './file-helper'
 
 let assetConfig = FileHelper.readJSONFile('./server/assetconfig.json')
 

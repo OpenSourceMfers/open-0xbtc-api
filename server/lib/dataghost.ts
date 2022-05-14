@@ -1,5 +1,5 @@
  
-import FileHelper from './file-helper.js'
+import FileHelper from './file-helper'
 
 import VibeGraph from 'vibegraph'
  
@@ -8,7 +8,7 @@ import Web3 from 'web3'
 
  
 
-import IndexerMineableToken  from '../indexers/IndexerMineableToken.js' 
+import IndexerMineableToken  from '../indexers/IndexerMineableToken' 
 
 let SuperERC20ABI = FileHelper.readJSONFile('./server/abi/SuperERC20ABI.json')
  
