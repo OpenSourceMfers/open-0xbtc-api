@@ -48,8 +48,4 @@ npm run server
 
 NODE_ENV=production yarn tasks
 
-
-
-## making a request 
-
-https://apidocs.0xbtc.io
+ 
