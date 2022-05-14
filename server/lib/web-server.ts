@@ -5,9 +5,7 @@
  import cors from 'cors'
  const formidable = require('express-formidable')
 
- 
-import fs from 'fs'
-import path from 'path'
+  
 
 // @ts-ignore
 import  history from 'connect-history-api-fallback'
@@ -26,7 +24,7 @@ import APIController from '../controllers/APIController'
 
 
 
-const AllRoutes:Array<Route> = FileHelper.readJSONFile('./shared/routes/all_routes.json')
+const AllRoutes:Array<Route> = FileHelper.readJSONFile('./server/routes.json')
  
 
  

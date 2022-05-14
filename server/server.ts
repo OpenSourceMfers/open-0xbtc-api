@@ -15,16 +15,16 @@ import AssetHelper from './lib/asset-helper'
 
 import DataGhost from './lib/dataghost'
 
-import MintEstimateTasks from './tasks/mint-estimate-tasks.js'
+import MintEstimateTasks from './tasks/mint-estimate-tasks'
 
-import SingletonLoopMethod from './lib/singleton-loop-method.js'
+import SingletonLoopMethod from './lib/singleton-loop-method'
 
 import Web3 from 'web3'
 import ERC20DBExtension from './dbextensions/ERC20DBExtensions'
 import APIController from './controllers/APIController'
 import WebServer from './lib/web-server'
 
-let envmode = process.env.NODE_ENV
+let envmode = process.env.NODE_ENV ? process.env.NODE_ENV : 'development'
 
 let serverConfigFile = FileHelper.readJSONFile('./server/serverconfig.json')
 let serverConfig = serverConfigFile[envmode]

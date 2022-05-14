@@ -1,12 +1,15 @@
 
 
 
+import ExtensibleMongoDB , {DatabaseExtension} from 'extensible-mongoose'
+
 
 import Web3 from 'web3'
 
 //import {BN} from 'web3-utils'
 
 import BigNumber from 'bignumber.js'
+import { ERC20DifficultyEraDefinition, ERC20DifficultyEraSchema, ERC20MintDefinition } from '../dbextensions/ERC20DBExtensions'
 
 const web3utils = Web3.utils
 
@@ -24,10 +27,10 @@ const web3utils = Web3.utils
 export default class MintEstimateTasks {
 
 
-    static async getLatestDifficultyAdjustEra(  mongoInterface,contractAddress  ){
+    static async getLatestDifficultyAdjustEra(  mongoInterface : ExtensibleMongoDB,contractAddress: string   ){
 
          
-        let latestEra = await mongoInterface.findOneSorted('erc20_difficulty_era', {contractAddress:contractAddress}, {difficultyEra: -1})
+        let latestEra = await mongoInterface.getModel(ERC20DifficultyEraDefinition).findOne( {contractAddress:contractAddress}).sort({difficultyEra: -1})
  
         if(latestEra){
            
@@ -39,7 +42,7 @@ export default class MintEstimateTasks {
         return 0
     }
 
-    static async estimateDifficultyForRemainingEras(mongoInterface,contractAddress){
+    static async estimateDifficultyForRemainingEras(mongoInterface: ExtensibleMongoDB,contractAddress: string){
 
         let latestDiffEra = await MintEstimateTasks.getLatestDifficultyAdjustEra(mongoInterface,contractAddress)
 
@@ -48,9 +51,9 @@ export default class MintEstimateTasks {
         return await MintEstimateTasks.estimateDifficultyForAllMints(mongoInterface,contractAddress, latestDiffEra)
     }
 
-    static async estimateHashrateForRemainingMints(mongoInterface, contractAddress){
+    static async estimateHashrateForRemainingMints(mongoInterface: ExtensibleMongoDB, contractAddress: string ){
 
-        let latestMintWithHashrate = await mongoInterface.findOneSorted('erc20_mint', {contractAddress: contractAddress, hashrate_avg8mint: {$exists: true } }, {epochCount: -1})
+        let latestMintWithHashrate = await mongoInterface.getModel(ERC20MintDefinition).findOne({contractAddress: contractAddress, hashrate_avg8mint: {$exists: true } }).sort( {epochCount: -1})
           
 
         let startEpochCount = 2
@@ -68,7 +71,7 @@ export default class MintEstimateTasks {
 
 
 
-    static async estimateDifficultyForAllMints( mongoInterface, contractAddress, initDiffAdjustEra){
+    static async estimateDifficultyForAllMints( mongoInterface: ExtensibleMongoDB, contractAddress:string , initDiffAdjustEra: number ){
         
         BigNumber.config({ ROUNDING_MODE: 1 })//round down    
 
@@ -98,7 +101,8 @@ export default class MintEstimateTasks {
             console.log('miningTarget', miningTarget.toFixed(0) , difficulty.toFixed(0) )
 
 
-            let upserted = await mongoInterface.upsertOne('erc20_difficulty_era', {difficultyEra: difficultyAdjustmentEra }, {contractAddress: contractAddress , difficultyEra: difficultyAdjustmentEra,estimatedDifficultyTarget: miningTarget.toFixed(0), estimatedDifficulty: (difficulty.toFixed(0))} )
+            let upserted = await mongoInterface.getModel(ERC20DifficultyEraDefinition)
+            .findOneAndUpdate(  {difficultyEra: difficultyAdjustmentEra }, {contractAddress: contractAddress , difficultyEra: difficultyAdjustmentEra,estimatedDifficultyTarget: miningTarget.toFixed(0), estimatedDifficulty: (difficulty.toFixed(0))}, {upsert:true} )
             
             
             difficultyAdjustmentEra++
@@ -108,7 +112,7 @@ export default class MintEstimateTasks {
 
     }
 
-    static async estimateHashrateForAllMints(mongoInterface,contractAddress, initEpochCount){
+    static async estimateHashrateForAllMints(mongoInterface: ExtensibleMongoDB,contractAddress:string , initEpochCount: number ){
         
         BigNumber.config({ ROUNDING_MODE: 1 })//round down    
 
@@ -118,7 +122,7 @@ export default class MintEstimateTasks {
         if(epochCount < 2 ) {epochCount = 2 } //fix since first mint is epoch of 2 
  
          
-        let nextRow = await mongoInterface.findOne('erc20_mint',{contractAddress:contractAddress, epochCount: epochCount }) 
+        let nextRow = await mongoInterface.getModel(ERC20MintDefinition).findOne( {contractAddress:contractAddress, epochCount: epochCount }) 
  
         while(nextRow){
 
@@ -129,8 +133,8 @@ export default class MintEstimateTasks {
 
                 let mintData = await MintEstimateTasks.getDataForMint( epochCount,contractAddress, mongoInterface )
 
-                let updated = await mongoInterface.updateOne(
-                'erc20_mint', 
+                let updated = await mongoInterface.getModel(ERC20MintDefinition).updateOne(
+                 
                 {epochCount: epochCount,contractAddress:contractAddress}, 
                 {hashrate_avg8mint: estimatedHashrate.hashrate_avg8mint.toFixed(0),
                 estimatedDifficulty: mintData.estimatedDifficulty,
@@ -141,7 +145,7 @@ export default class MintEstimateTasks {
             } 
 
             epochCount++;
-            nextRow = await mongoInterface.findOne('erc20_mint',{contractAddress:contractAddress, epochCount: epochCount}) 
+            nextRow = await mongoInterface.getModel(ERC20MintDefinition).findOne({contractAddress:contractAddress, epochCount: epochCount}) 
 
         }
     }
@@ -149,7 +153,7 @@ export default class MintEstimateTasks {
 
 
     //estimate the target 
-    static async estimateDifficultyTargetForEra(eraCount, contractAddress, mongoInterface){
+    static async estimateDifficultyTargetForEra(eraCount:number, contractAddress:string, mongoInterface: ExtensibleMongoDB){
 
         console.log('estimateDifficultyTargetForEra', eraCount  )
         if(eraCount == 0){
@@ -176,19 +180,19 @@ export default class MintEstimateTasks {
         let finalEpochCount = eraCount * 1024 + FINAL_OFFSET 
 
 
-        let firstRowOfEra =  await mongoInterface.findOne('erc20_mint',{epochCount: initialEpochCount, contractAddress:contractAddress }) 
+        let firstRowOfEra =  await mongoInterface.getModel(ERC20MintDefinition).findOne({epochCount: initialEpochCount, contractAddress:contractAddress }) 
         if(!firstRowOfEra){
             console.log('WARN: no first era ')
             return {miningTarget:null}
         }
 
-        let lastRowOfEra = await mongoInterface.findOne('erc20_mint',{contractAddress:contractAddress, epochCount: finalEpochCount  })  // should be -1 ?
+        let lastRowOfEra = await mongoInterface.getModel(ERC20MintDefinition).findOne({contractAddress:contractAddress, epochCount: finalEpochCount  })  // should be -1 ?
         if(!lastRowOfEra){
             console.log('WARN: no last era ')
             return  {miningTarget:null} 
         }
 
-        let previousEraData = await mongoInterface.findOne('erc20_difficulty_era', {contractAddress:contractAddress, difficultyEra: eraCount-1} )
+        let previousEraData = await mongoInterface.getModel(ERC20DifficultyEraDefinition).findOne({contractAddress:contractAddress, difficultyEra: eraCount-1} )
         let previousTarget =  new BigNumber(previousEraData.estimatedDifficultyTarget)
 
         console.log('previousTarget', previousEraData.estimatedDifficultyTarget, previousTarget.toFixed(0))
@@ -259,7 +263,7 @@ export default class MintEstimateTasks {
     }
 
 
-    static async estimateHashrateForMint(epochCount, contractAddress, mongoInterface){
+    static async estimateHashrateForMint(epochCount:number, contractAddress:string, mongoInterface: ExtensibleMongoDB){
 
 
         let averageBlockSpan = 8//number of blocks to average over 
@@ -303,9 +307,9 @@ export default class MintEstimateTasks {
 
     }
 
-    static async getDataForMint(epochCount,contractAddress,mongoInterface){
+    static async getDataForMint(epochCount:number,contractAddress:string,mongoInterface: ExtensibleMongoDB){
 
-        let mintData = await mongoInterface.findOne('erc20_mint',{epochCount: epochCount,contractAddress:contractAddress }) 
+        let mintData = await mongoInterface.getModel(ERC20MintDefinition).findOne({epochCount: epochCount,contractAddress:contractAddress }) 
 
         if(!mintData){
             return null 
@@ -314,7 +318,7 @@ export default class MintEstimateTasks {
 
         let eraCount = Math.floor( epochCount / 1024 )
 
-        let eraData = await mongoInterface.findOne('erc20_difficulty_era', {difficultyEra: eraCount, contractAddress:contractAddress}  )
+        let eraData = await mongoInterface.getModel(ERC20DifficultyEraDefinition).findOne({difficultyEra: eraCount, contractAddress:contractAddress}  )
 
         if(!eraData){
             return null 
@@ -324,7 +328,7 @@ export default class MintEstimateTasks {
 
     }
 
-    static limitLessThan(a,b){
+    static limitLessThan(a:BigNumber,b:BigNumber){
         if(a.gt(b)) return b;
 
         return a;

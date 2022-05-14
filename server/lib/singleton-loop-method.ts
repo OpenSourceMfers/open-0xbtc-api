@@ -12,21 +12,18 @@
 
 export default class SingletonLoopMethod {
 
-    constructor(callback, args){
-        this.registerMethod(callback,args)
+    constructor(public callback: Function, public args:any[]){
+       // this.registerMethod(callback,args)
+
+        this.executing = false 
+ 
     }
 
+    executing: boolean
+    interval: NodeJS.Timer | undefined
 
-    //callback should be a promise 
-    registerMethod(  callback, args  ){
-        //console.log('typeof callback', typeof callback)
-        //if(typeof callback!='Promise') throw 'Must be a promise'
 
-        this.callback = callback;
-        this.args=args;
-    } 
-
-    start(delayMs){
+    start(delayMs:number ){
 
         this.execute()
 

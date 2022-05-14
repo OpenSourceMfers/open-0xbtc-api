@@ -1,4 +1,4 @@
-import DegenAuth from "degen-auth";
+ 
 import ExtensibleDB from 'extensible-mongoose'
  
 

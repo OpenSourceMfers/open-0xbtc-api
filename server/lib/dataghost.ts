@@ -15,7 +15,7 @@ let SuperERC20ABI = FileHelper.readJSONFile('./server/abi/SuperERC20ABI.json')
 
 
 
-let envmode = process.env.NODE_ENV
+let envmode = process.env.NODE_ENV ? process.env.NODE_ENV : 'development'
 
 
  
