@@ -79,9 +79,4 @@ startEpoch
 `
 The starting epoch of mint. Default is the latest mint epoch (closest to present time).
 
-
-## running tasks 
-
-NODE_ENV=production npm run tasks
-
  

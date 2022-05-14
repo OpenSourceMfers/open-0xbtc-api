@@ -1,9 +1,8 @@
 
 
+ 
+import DatabaseTasks from './database-tasks'
 
-import MongoInterface from '../lib/mongo-interface.js'
-
-import DatabaseTasks from './database-tasks.js'
 import MintEstimateTasks from './mint-estimate-tasks.js'
 
 import AssetHelper from '../lib/asset-helper.js'
@@ -12,7 +11,7 @@ import FileHelper from '../lib/file-helper.js'
   
 import Web3 from 'web3'
 
-let envmode = process.env.NODE_ENV
+let envmode = process.env.NODE_ENV ?  process.env.NODE_ENV : 'development'
 
 
 let serverConfigFile = FileHelper.readJSONFile('./server/serverconfig.json')
