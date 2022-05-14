@@ -82,6 +82,6 @@ The starting epoch of mint. Default is the latest mint epoch (closest to present
 
 ## running tasks 
 
-NODE_ENV=production yarn tasks
+NODE_ENV=production npm run tasks
 
  
