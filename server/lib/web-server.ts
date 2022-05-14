@@ -88,7 +88,7 @@ export default class WebServer  {
      
  
       //host static files from dist for webpage 
-      const staticFileMiddleware = express.static('cache');
+      const staticFileMiddleware = express.static('dist');
       this.app.use(staticFileMiddleware);
       this.app.use(history({
         disableDotRule: true,
