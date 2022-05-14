@@ -2,7 +2,7 @@
     "apps" : [
         {
           "name": "apiServer",
-          "script": "./server/server.js",
+          "script": "npm run server",
           "watch": true,
           "env": { 
               "NODE_ENV": "development"

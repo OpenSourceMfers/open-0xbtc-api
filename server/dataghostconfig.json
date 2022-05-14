@@ -3,7 +3,7 @@
         "vibeGraphConfig":{
             "contracts":[ 
 
-                {"address":"0x244aa29426fb6524760bd9acbb66ad53c5eb32ca", "startBlock":2494326  , "type":"MineableToken"}  
+                {"address":"0x244aa29426fb6524760bd9acbb66ad53c5eb32ca", "startBlock":8746028	  , "type":"MineableToken"}  
       
 
             ], 
