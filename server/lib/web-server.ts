@@ -59,8 +59,7 @@ export default class WebServer  {
 
         this.apiPort = this.serverConfig.port? this.serverConfig.port : 3000
 
-       
-        let envmode = process.env.NODE_ENV
+        
 
       
         this.app.use(cors());

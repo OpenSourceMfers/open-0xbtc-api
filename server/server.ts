@@ -65,6 +65,8 @@ let assetConfig = FileHelper.readJSONFile('./server/assetconfig.json')
     estHashrateLoop.start(1000)
 
 
+    
+
     let apiControllers = [
       {name:'api', controller: new APIController(mongoInterface)},
      
