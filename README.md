@@ -57,7 +57,7 @@ npm run server
 **POST /api/mints/**  
 Returns data about recent 0xBTC mints.  Returns all mint data in time Descending order.  
 
-Input Fields:
+*Input Fields*
 
 `
 contractAddress
