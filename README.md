@@ -67,7 +67,7 @@ The contract address of the 0xBitcoin smart contract.
 `
 size
 `
-The amount of results to return. Maximum of 500. Defaault is 1.
+The amount of results to return. Maximum of 500. Default is 1.
 
 `
 spacing
