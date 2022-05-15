@@ -2,7 +2,7 @@
   <div>
     <div class="section bg-gray-200 border-b-4 border-black px-0 lg:px-1">
       <div class=" ">
-        <Navbar v-bind:web3Plug="web3Plug" v-bind:accessPlug="accessPlug" />
+        <Navbar  />
       </div>
     </div>
 
@@ -52,6 +52,10 @@ import BlobArt from "./components/BlobArt.vue";
 import StarflaskAPIHelper from "../js/starflask-api-helper.js";
 import FrontendHelper from "../js/frontend-helper.js";
 
+
+
+import {resolveRestQuery} from '../js/rest-api-helper'
+
 export default {
   name: "Home",
   props: [],
@@ -62,8 +66,10 @@ export default {
     };
   },
 
-  created() {
-     
+  mounted() {
+       this.fetchLatestBlockData()
+
+       setInterval( this.fetchLatestBlockData.bind(this) , 60 * 1000 )
   },
 
   methods: {
@@ -73,6 +79,26 @@ export default {
       return FrontendHelper.getRouteTo(dest);
     },
 
+
+    async fetchLatestBlockData(){
+
+        let baseURI = '/api/mints'
+        let result = await resolveRestQuery(`${baseURI}`,{contractAddress:"0xb6ed7644c69416d67b522e20bc294a9a9b405b31"})
+          
+
+        if(result && result.success){
+          this.latestBlockData = result.output[0]
+          console.log('result',result)
+        }
+
+      },
+
+      getCurrentHashrate(){
+
+        let rawHashrate = this.latestBlockData.hashrate_avg8mint
+
+        return ( rawHashrate / 1000000000000 ).toFixed(2)
+      }
     
   },
 };

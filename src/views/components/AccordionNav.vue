@@ -2,21 +2,15 @@
   <nav role="navigation" class="w-full m-2 p-2 inline-block">
 
     <div class=" ">
-      <div v-if="web3Plug.connectedToWeb3() == false" @click="connectToWeb3" class="button text-center bg-blue-500 hover:bg-blue-700 text-white font-bold my-2 py-2 px-4 rounded cursor-pointer">Login with Web3</div>
-
-      <div v-if="web3Plug.connectedToWeb3() "   class="truncate text-center text-gray-800 p-2" style="   ">
-
+  
       
         <AccessButton
            v-bind:providerNetworkID="activeNetworkId"
-           v-bind:web3Plug='web3Plug'
-           v-bind:accessPlug='accessPlug' 
+        
          />
 
 
-        <span class="  " style=" ">
-        <a   v-bind:href="getEtherscanBaseURL()+'/address/'+web3Plug.getActiveAccountAddress()" class="text-gray-800  "   target="_blank">  {{web3Plug.getActiveAccountAddress()}} </a>
-       </span>
+      
        </div>
     </div>
 
@@ -117,7 +111,7 @@ import AccessButton from './AccessButton.vue'
 import Config from '../config/UpperNav.js'
 export default {
   name: 'AccordionNav',
-  props: ['web3Plug', 'accessPlug' ],
+  props: [ ],
   components:{AccessButton},
   data() {
     return {
@@ -128,17 +122,11 @@ export default {
   },
   created(){
     this.navConfig = Config;
-    this.web3Plug.getPlugEventEmitter().on('stateChanged', function(connectionState) {
-          console.log('stateChanged',connectionState);
-          this.activeAccountAddress = connectionState.activeAccountAddress
-          this.activeNetworkId = connectionState.activeNetworkId
-        }.bind(this));
+    
   },
   methods: {
    
-    connectToWeb3(){
-      this.web3Plug.connectWeb3( )
-    },
+    
     getEtherscanBaseURL(){
         if(this.activeNetworkId == 42){
           return  'https://kovan.etherscan.io'
