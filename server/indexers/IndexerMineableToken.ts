@@ -105,6 +105,8 @@ export default class IndexerMineableToken {
 
         let collectionName = 'erc20_mints' 
 
+        console.log('save mint as ', collectionName)
+
         await mongoInterface.insertOne(collectionName, {accountAddress: accountAddress, contractAddress: contractAddress, amount: amountDelta , epochCount:epochCount,  blockNumber: blockNumber, lastUpdatedAt: Date.now()}   )
 
     
