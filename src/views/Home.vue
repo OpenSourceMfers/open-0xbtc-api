@@ -14,7 +14,8 @@
             
           
 
-            <a :href="'https://apidocs.0xbtc.io'" class="text-white text-lg">
+            <a :href="'https://github.com/OpenSourceMfers/open-0xbtc-api'"
+             class="no-underline select-none text-white text-lg p-4 bg-teal-600 hover:bg-teal-500 border-2 border-neutral-800">
               API Documentation
             </a>
           </div>

@@ -1,6 +1,6 @@
 <template>
   <div data-collapse="small" data-animation="default" data-duration="400" class="navbar w-nav">
-    <div class=" bg-transparent">
+    <div class=" bg-neutral-800 text-white ">
     <div class="container w-container">
       <div class="w-full flex flex-row">
 
@@ -8,7 +8,7 @@
         <div class=" inline-block mx-2 ">
         <img class="inline-block mb-1 " width="24" height="24" src="/squiggle_sm.png" />
         </div>
-        <router-link to="/" class='no-underline flex-grow inline text-xl text-gray-900 font-bold'>Open 0xBTC API</router-link>
+        <router-link to="/" class='no-underline flex-grow inline text-xl text-neutral-200 font-bold'>Open 0xBTC API</router-link>
        </div>
  
  
