@@ -103,7 +103,7 @@ export default class IndexerMineableToken {
 
    static async mint(accountAddress, contractAddress, amountDelta, epochCount, blockNumber, mongoInterface){
 
-        let collectionName = 'erc20_mint' 
+        let collectionName = 'erc20_mints' 
 
         await mongoInterface.insertOne(collectionName, {accountAddress: accountAddress, contractAddress: contractAddress, amount: amountDelta , epochCount:epochCount,  blockNumber: blockNumber, lastUpdatedAt: Date.now()}   )
 
