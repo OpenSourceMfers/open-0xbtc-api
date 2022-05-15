@@ -46,7 +46,7 @@ describe("Test", async function() {
         ]
  
         
-        let insert = await vibegraphInterface.insertMany('erc20_mint',stubRecords)
+        let insert = await vibegraphInterface.insertMany('erc20_mints',stubRecords)
 
         //console.log('insert',insert)
         expect(insert.insertedCount).to.equal(stubRecords.length);
@@ -59,14 +59,14 @@ describe("Test", async function() {
       
 
 
-      let secondEra = await vibegraphInterface.findOne('erc20_difficulty_era', {difficultyEra:1})
+      let secondEra = await vibegraphInterface.findOne('erc20_difficulty_eras', {difficultyEra:1})
 
 
       expect(secondEra).to.exist 
       expect(secondEra.estimatedDifficultyTarget).to.eql('27165273620967659067343199073922372180847564914462641481119695344874048')
 
 
-      let thirdEra = await vibegraphInterface.findOne('erc20_difficulty_era', {difficultyEra:2}) 
+      let thirdEra = await vibegraphInterface.findOne('erc20_difficulty_eras', {difficultyEra:2}) 
 
       expect(thirdEra.estimatedDifficultyTarget).to.eql('13582636810483829533671599536961186090423782457231320740559847672437048')
     }); 

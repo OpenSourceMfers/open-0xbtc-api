@@ -84,7 +84,7 @@ export default class MintEstimateTasks {
         if(epochCount < 2 ) {epochCount = 2 } //fix since first mint is epoch of 2 
 
 
-       // let nextRow = await mongoInterface.findOne('erc20_mint',{epochCount: epochCount }) 
+       // let nextRow = await mongoInterface.findOne('erc20_mints',{epochCount: epochCount }) 
 
 
        console.log('estimateDifficultyForAllMints', epochCount)
@@ -106,7 +106,7 @@ export default class MintEstimateTasks {
             
             
             difficultyAdjustmentEra++
-            //nextRow = await mongoInterface.findOne('erc20_mint',{epochCount: epochCount }) 
+            //nextRow = await mongoInterface.findOne('erc20_mints',{epochCount: epochCount }) 
         }
 
 
