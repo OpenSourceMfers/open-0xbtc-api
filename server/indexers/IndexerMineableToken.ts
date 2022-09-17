@@ -1,4 +1,5 @@
 
+import ExtensibleMongoDB , {DatabaseExtension} from 'extensible-mongoose'
 
 import Web3 from 'web3'
 
@@ -9,9 +10,16 @@ const web3utils = Web3.utils
 
 export default class IndexerMineableToken {
  
-    static async modifyLedgerByEvent(event,mongoInterface){
 
-        await IndexerMineableToken.modifyERC20LedgerByEvent(event,mongoInterface)
+    constructor(public mongoInterface:ExtensibleMongoDB){
+
+
+    }
+   
+ 
+    async modifyLedgerByEvent(event){
+
+        await IndexerMineableToken.modifyERC20LedgerByEvent(event,this.mongoInterface)
 
     }
 

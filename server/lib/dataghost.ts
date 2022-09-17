@@ -29,7 +29,7 @@ const dbName = 'open_0xbtc_api_'.concat(envmode)
 export default class DataGhost {
 
 
-  async init(serverConfig){
+  async init(serverConfig,mongoInterface){
 
     console.log('dataghost config: ',dataghostConfig)
 
@@ -39,7 +39,8 @@ export default class DataGhost {
  
     console.log('web3 ready with provider ',serverConfig.web3provider )
 
-  
+    let indexerMineableToken = new IndexerMineableToken( mongoInterface )
+     
     
     let vibeGraphConfig = {  
       contracts:dataghostConfig.vibeGraphConfig.contracts,
@@ -53,7 +54,7 @@ export default class DataGhost {
       customIndexers:[{
         type:'MineableToken', 
         abi: SuperERC20ABI ,  
-        handler: IndexerMineableToken
+        handler: indexerMineableToken
      }]
        
        

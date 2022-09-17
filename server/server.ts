@@ -52,7 +52,7 @@ let assetConfig = FileHelper.readJSONFile('./server/assetconfig.json')
  
       
     let dataghost = new DataGhost()
-    dataghost.init(serverConfig)
+    dataghost.init(serverConfig,mongoInterface)
 
      
 
