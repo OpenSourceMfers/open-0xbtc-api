@@ -24,7 +24,7 @@ let dataghostConfigFile = FileHelper.readJSONFile('./server/dataghostconfig.json
 let dataghostConfig = dataghostConfigFile[envmode]
 
 
-const dbName = 'open_0xbtc_api_'.concat(envmode)
+const dbName = 'open_0xbtc_api_vibegraph_'.concat(envmode)
 
 export default class DataGhost {
 

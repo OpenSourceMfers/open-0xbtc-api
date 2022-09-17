@@ -2,6 +2,7 @@
 import ExtensibleMongoDB , {DatabaseExtension} from 'extensible-mongoose'
 
 import Web3 from 'web3'
+import { ERC20ApprovalDefinition, ERC20BalanceDefinition, ERC20MintDefinition, ERC20TransferDefinition } from '../dbextensions/ERC20DBExtensions'
 
 
 const web3utils = Web3.utils
@@ -111,62 +112,59 @@ export default class IndexerMineableToken {
 
    static async mint(accountAddress, contractAddress, amountDelta, epochCount, blockNumber, mongoInterface){
 
-        let collectionName = 'erc20_mints' 
+     
 
-        await mongoInterface.insertOne(collectionName, {accountAddress: accountAddress, contractAddress: contractAddress, amount: amountDelta , epochCount:epochCount,  blockNumber: blockNumber, lastUpdatedAt: Date.now()}   )
+        await mongoInterface.getModel(ERC20MintDefinition).create({accountAddress: accountAddress, contractAddress: contractAddress, amount: amountDelta , epochCount:epochCount,  blockNumber: blockNumber, lastUpdatedAt: Date.now()}   )
 
     
     }
 
    static async modifyERC20LedgerBalance(accountAddress, contractAddress, amountDelta, mongoInterface){
 
-       let collectionName = 'erc20_balances' 
+      
 
-       let existingFrom = await mongoInterface.findOne(collectionName, {accountAddress: accountAddress, contractAddress: contractAddress }  )
+       let existingFrom = await mongoInterface.getModel(ERC20BalanceDefinition).findOne({accountAddress: accountAddress, contractAddress: contractAddress }  )
 
        if(existingFrom){
-           await mongoInterface.updateCustomAndFindOne(collectionName, {accountAddress: accountAddress, contractAddress: contractAddress } , {  $inc: { amount: amountDelta } , $set:{ lastUpdatedAt:  (Date.now())  } } )
+           await mongoInterface.getModel(ERC20BalanceDefinition).findOneAndUpdate( {accountAddress: accountAddress, contractAddress: contractAddress } , {  $inc: { amount: amountDelta } , $set:{ lastUpdatedAt:  (Date.now())  } } )
        }else{
-           await mongoInterface.insertOne(collectionName, {accountAddress: accountAddress, contractAddress: contractAddress, amount: amountDelta , lastUpdatedAt:  (Date.now())}   )
+           await mongoInterface.getModel(ERC20BalanceDefinition).create( {accountAddress: accountAddress, contractAddress: contractAddress, amount: amountDelta , lastUpdatedAt:  (Date.now())}   )
        }
    }
 
    static async modifyERC20LedgerApproval( contractAddress, ownerAddress, spenderAddress,   amountDelta , mongoInterface){
+ 
 
-       let collectionName = 'erc20_approval' 
-
-       let existingFrom = await mongoInterface.findOne(collectionName, {ownerAddress: ownerAddress, spenderAddress: spenderAddress, contractAddress: contractAddress }  )
+       let existingFrom = await mongoInterface.getModel(ERC20ApprovalDefinition).findOne( {ownerAddress: ownerAddress, spenderAddress: spenderAddress, contractAddress: contractAddress }  )
 
        if(existingFrom){
-           await mongoInterface.updateCustomAndFindOne(collectionName, {ownerAddress: ownerAddress, spenderAddress: spenderAddress, contractAddress: contractAddress } , {  $inc: { amount: amountDelta } , $set:{ lastUpdatedAt:  (Date.now()) } } )
+           await mongoInterface.getModel(ERC20ApprovalDefinition).findOneAndUpdate( {ownerAddress: ownerAddress, spenderAddress: spenderAddress, contractAddress: contractAddress } , {  $inc: { amount: amountDelta } , $set:{ lastUpdatedAt:  (Date.now()) } } )
        }else{
-           await mongoInterface.insertOne(collectionName, {ownerAddress: ownerAddress, spenderAddress: spenderAddress, contractAddress: contractAddress, amount: amountDelta , lastUpdatedAt:  (Date.now()) }   )
+           await mongoInterface.getModel(ERC20ApprovalDefinition).create( {ownerAddress: ownerAddress, spenderAddress: spenderAddress, contractAddress: contractAddress, amount: amountDelta , lastUpdatedAt:  (Date.now()) }   )
        }
    }
 
    static async modifyERC20TransferredTotal( contractAddress, from, to,   amountDelta , mongoInterface){
+ 
 
-    let collectionName = 'erc20_transferred' 
-
-    let existingFrom = await mongoInterface.findOne(collectionName, {from: from, to: to, contractAddress: contractAddress }  )
+    let existingFrom = await mongoInterface.getModel(ERC20TransferDefinition).findOne( {from: from, to: to, contractAddress: contractAddress }  )
 
     if(existingFrom){
-        await mongoInterface.updateCustomAndFindOne(collectionName, {from: from, to: to, contractAddress: contractAddress } , {  $inc: { amount: amountDelta }, $set:{ lastUpdatedAt:  (Date.now())} }  )
+        await mongoInterface.getModel(ERC20TransferDefinition).findOneAndUpdate( {from: from, to: to, contractAddress: contractAddress } , {  $inc: { amount: amountDelta }, $set:{ lastUpdatedAt:  (Date.now())} }  )
     }else{
-        await mongoInterface.insertOne(collectionName, {from: from, to: to, contractAddress: contractAddress, amount: amountDelta, lastUpdatedAt: (Date.now()) }   )
+        await mongoInterface.getModel(ERC20TransferDefinition).create( {from: from, to: to, contractAddress: contractAddress, amount: amountDelta, lastUpdatedAt: (Date.now()) }   )
     }
 }
 
    static async setERC20LedgerApproval( contractAddress, ownerAddress, spenderAddress,   newAmount , mongoInterface ){
+ 
 
-       let collectionName = 'erc20_approval' 
-
-       let existingFrom = await mongoInterface.findOne(collectionName, {ownerAddress: ownerAddress, spenderAddress: spenderAddress, contractAddress: contractAddress }  )
+       let existingFrom = await mongoInterface.getModel(ERC20ApprovalDefinition).findOne( {ownerAddress: ownerAddress, spenderAddress: spenderAddress, contractAddress: contractAddress }  )
 
        if(existingFrom){
-           await mongoInterface.updateCustomAndFindOne(collectionName, {ownerAddress: ownerAddress, spenderAddress: spenderAddress, contractAddress: contractAddress } , {  $set: { amount: newAmount , lastUpdatedAt:  (Date.now())} } )
+           await mongoInterface.getModel(ERC20ApprovalDefinition).findOneAndUpdate(  {ownerAddress: ownerAddress, spenderAddress: spenderAddress, contractAddress: contractAddress } , {  $set: { amount: newAmount , lastUpdatedAt:  (Date.now())} } )
        }else{
-           await mongoInterface.insertOne(collectionName, {ownerAddress: ownerAddress, spenderAddress: spenderAddress, contractAddress: contractAddress, amount: newAmount , lastUpdatedAt:  (Date.now()) }   )
+           await mongoInterface.getModel(ERC20ApprovalDefinition).create( {ownerAddress: ownerAddress, spenderAddress: spenderAddress, contractAddress: contractAddress, amount: newAmount , lastUpdatedAt:  (Date.now()) }   )
        }
    }
 
